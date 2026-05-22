@@ -57,21 +57,32 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 [sourceFiles]
 Data/AppDbContext.cs
 DTOs/
- GameDto.cs
- UserDto.cs
+ CurrentUserDto.cs
+ GameDetailDto.cs
+ GameSummaryDto.cs
+ PlatformDto.cs
+ RegionDto.cs
 Endpoints/
  AuthEndpoints.cs
  GameEndpoints.cs
+ PlatformEndpoints.cs
+ RegionEndpoints.cs
  UserEndpoints.cs
 Models/
  AppUser.cs
- FavoriteGame.cs
  Game.cs
+ GameRelease.cs
+ Platform.cs
+ Region.cs
 obj/Debug/net11.0/
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
  backend.AssemblyInfo.cs
  backend.GlobalUsings.g.cs
 Program.cs
+Services/
+ AuthUserService.cs
+ GameService.cs
+ SeedService.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/11.0.0-preview.3.26207.106/ref/net11.0/
