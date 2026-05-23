@@ -1,0 +1,26 @@
+/* frontend/app/globals.css */
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #101510;
+  color: #f4f4f4;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+a {
+  color: #9fd77a;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  font-weight: bold;
+}

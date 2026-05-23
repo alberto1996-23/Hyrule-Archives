@@ -24,9 +24,11 @@ public static class AuthEndpoints
                 );
             }
 
+            var frontendBaseUrl = configuration["Frontend:BaseUrl"] ?? "http://localhost:3000";
+
             var properties = new AuthenticationProperties
             {
-                RedirectUri = "/swagger"
+                RedirectUri = $"{frontendBaseUrl}/auth/callback"
             };
 
             return Results.Challenge(properties, new[] { "Google" });
