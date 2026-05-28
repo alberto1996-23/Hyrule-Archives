@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Platform> Platforms => Set<Platform>();
     public DbSet<Region> Regions => Set<Region>();
     public DbSet<GameRelease> GameReleases => Set<GameRelease>();
+    public DbSet<CollectionItem> CollectionItems => Set<CollectionItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -51,6 +52,20 @@ public class AppDbContext : DbContext
             .WithMany(region => region.Releases)
             .HasForeignKey(release => release.RegionId);
 
+        modelBuilder.Entity<CollectionItem>()
+            .HasOne(item => item.AppUser)
+            .WithMany(user => user.CollectionItems)
+            .HasForeignKey(item => item.AppUserId);
+
+        modelBuilder.Entity<CollectionItem>()
+            .HasOne(item => item.Game)
+            .WithMany(game => game.CollectionItems)
+            .HasForeignKey(item => item.GameId);
+
+        modelBuilder.Entity<CollectionItem>()
+            .HasIndex(item => new { item.AppUserId, item.GameId })
+            .IsUnique();
+            
         SeedData(modelBuilder);
     }
 

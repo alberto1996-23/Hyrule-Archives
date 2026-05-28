@@ -56,3 +56,71 @@ export async function logout() {
     throw new Error("Unable to log out.");
   }
 }
+
+export type GameSummary = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  imageUrl: string | null;
+  releaseCount: number;
+};
+
+export type CollectionItem = {
+  id: string;
+  gameId: string;
+  gameTitle: string;
+  gameSlug: string;
+  imageUrl: string | null;
+  status: string;
+  createdAt: string;
+};
+
+export async function getGames(): Promise<GameSummary[]> {
+  const response = await fetch(`${API_BASE_URL}/api/games`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to load Zelda games.");
+  }
+
+  return response.json();
+}
+
+export async function getMyCollection(): Promise<CollectionItem[]> {
+  const response = await fetch(`${API_BASE_URL}/api/me/collection`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (response.status === 401) {
+    throw new Error("You must be signed in to view your collection.");
+  }
+
+  if (!response.ok) {
+    throw new Error("Unable to load your collection.");
+  }
+
+  return response.json();
+}
+
+export async function addGameToMyCollection(gameId: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/api/me/collection`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ gameId }),
+  });
+
+  if (response.status === 409) {
+    throw new Error("This game is already in your collection.");
+  }
+
+  if (!response.ok) {
+    throw new Error("Unable to add this game to your collection.");
+  }
+}

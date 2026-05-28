@@ -55,6 +55,36 @@ namespace backend.Migrations
                     b.ToTable("AppUsers");
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.CollectionItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("AppUserId", "GameId")
+                        .IsUnique();
+
+                    b.ToTable("CollectionItems");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.Game", b =>
                 {
                     b.Property<Guid>("Id")
@@ -340,6 +370,25 @@ namespace backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.CollectionItem", b =>
+                {
+                    b.HasOne("HyruleArchives.Models.AppUser", "AppUser")
+                        .WithMany("CollectionItems")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HyruleArchives.Models.Game", "Game")
+                        .WithMany("CollectionItems")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.GameRelease", b =>
                 {
                     b.HasOne("HyruleArchives.Models.Game", "Game")
@@ -367,8 +416,15 @@ namespace backend.Migrations
                     b.Navigation("Region");
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.AppUser", b =>
+                {
+                    b.Navigation("CollectionItems");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.Game", b =>
                 {
+                    b.Navigation("CollectionItems");
+
                     b.Navigation("Releases");
                 });
 

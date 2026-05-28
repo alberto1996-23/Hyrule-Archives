@@ -99,6 +99,7 @@ app.MapPlatformEndpoints();
 app.MapRegionEndpoints();
 app.MapAuthEndpoints();
 app.MapUserEndpoints();
+app.MapCollectionEndpoints();
 
 app.Run();
 

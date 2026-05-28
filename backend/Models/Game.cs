@@ -26,4 +26,6 @@ public class Game
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
     public List<GameRelease> Releases { get; set; } = new();
+    
+    public List<CollectionItem> CollectionItems { get; set; } = new();
 }

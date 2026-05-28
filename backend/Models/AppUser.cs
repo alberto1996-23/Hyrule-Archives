@@ -21,4 +21,6 @@ public class AppUser
     public bool IsSimulated { get; set; } = false;
 
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    
+    public List<CollectionItem> CollectionItems { get; set; } = new();
 }
