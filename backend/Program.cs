@@ -68,6 +68,14 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Registers the MobyGames service with HttpClient.
+// This lets the service make HTTP requests to the MobyGames API.
+builder.Services.AddHttpClient<MobyGamesService>();
+
+// Registers the seed service.
+// This is used only for local development seed data.
+builder.Services.AddScoped<SeedService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -100,6 +108,13 @@ app.MapRegionEndpoints();
 app.MapAuthEndpoints();
 app.MapUserEndpoints();
 app.MapCollectionEndpoints();
+app.MapMobyGamesEndpoints();
+
+// Only expose seed endpoints during local development.
+if (app.Environment.IsDevelopment())
+{
+    app.MapDevSeedEndpoints();
+}
 
 app.Run();
 

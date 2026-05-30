@@ -124,3 +124,78 @@ export async function addGameToMyCollection(gameId: string): Promise<void> {
     throw new Error("Unable to add this game to your collection.");
   }
 }
+
+// Updates the status of a saved game in the user's collection.
+// Example status values: "Saved", "Playing", "Completed", "Dropped"
+export async function updateCollectionItemStatus(
+  collectionItemId: string,
+  status: string
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/me/collection/${collectionItemId}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to update this collection item.");
+  }
+}
+
+// Removes a saved game from the user's collection.
+export async function deleteCollectionItem(
+  collectionItemId: string
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/me/collection/${collectionItemId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to remove this game from your collection.");
+  }
+}
+
+// This type matches MobyPlatformDto from the backend.
+export type MobyPlatform = {
+  platformId: number;
+  platformName: string;
+  firstReleaseDate: string | null;
+};
+
+// This type matches MobyGameDto from the backend.
+export type MobyGame = {
+  mobyGameId: number;
+  title: string;
+  description: string | null;
+  mobyScore: number | null;
+  mobyUrl: string | null;
+  coverImage: string | null;
+  coverThumbnail: string | null;
+  screenshotImage: string | null;
+  platforms: MobyPlatform[];
+  sourceCredit: string;
+};
+
+// This calls our ASP.NET backend.
+// The backend calls MobyGames, so the API key stays protected.
+export async function getMobyGamesZeldaData(): Promise<MobyGame[]> {
+  const response = await fetch(`${API_BASE_URL}/api/mobygames/zelda`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to load MobyGames Zelda data.");
+  }
+
+  return response.json();
+}

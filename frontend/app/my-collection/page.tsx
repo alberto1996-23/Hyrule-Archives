@@ -5,9 +5,11 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import {
   addGameToMyCollection,
   CollectionItem,
+  deleteCollectionItem,
   GameSummary,
   getGames,
   getMyCollection,
+  updateCollectionItemStatus,
 } from "@/lib/api";
 
 export default function MyCollectionPage() {
@@ -17,6 +19,7 @@ export default function MyCollectionPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  // This reloads both the public game list and the signed-in user's collection.
   async function refreshCollectionPage() {
     const [gamesData, collectionData] = await Promise.all([
       getGames(),
@@ -61,6 +64,8 @@ export default function MyCollectionPage() {
     };
   }, []);
 
+  // CREATE:
+  // Adds a game to the signed-in user's collection.
   async function handleAddGame(gameId: string) {
     setMessage("");
     setError("");
@@ -78,6 +83,45 @@ export default function MyCollectionPage() {
     }
   }
 
+  // UPDATE:
+  // Changes the status of a saved collection item.
+  async function handleStatusChange(collectionItemId: string, status: string) {
+    setMessage("");
+    setError("");
+
+    try {
+      await updateCollectionItemStatus(collectionItemId, status);
+      setMessage("Collection item updated.");
+      await refreshCollectionPage();
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong.");
+      }
+    }
+  }
+
+  // DELETE:
+  // Removes a saved game from the signed-in user's collection.
+  async function handleDelete(collectionItemId: string) {
+    setMessage("");
+    setError("");
+
+    try {
+      await deleteCollectionItem(collectionItemId);
+      setMessage("Game removed from your collection.");
+      await refreshCollectionPage();
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong.");
+      }
+    }
+  }
+
+  // This helps us disable the "Add" button for games already saved.
   const savedGameIds = new Set(collection.map((item) => item.gameId));
 
   return (
@@ -106,7 +150,29 @@ export default function MyCollectionPage() {
                 <ul>
                   {collection.map((item) => (
                     <li key={item.id}>
-                      {item.gameTitle} — {item.status}
+                      <strong>{item.gameTitle}</strong>
+
+                      <label>
+                        Status:
+                        <select
+                          value={item.status}
+                          onChange={(event) =>
+                            handleStatusChange(item.id, event.target.value)
+                          }
+                        >
+                          <option value="Saved">Saved</option>
+                          <option value="Playing">Playing</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Dropped">Dropped</option>
+                        </select>
+                      </label>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        Remove
+                      </button>
                     </li>
                   ))}
                 </ul>

@@ -24,11 +24,13 @@ This project focuses specifically on The Legend of Zelda series, its release his
 
 ## Third-Party API
 
-The primary third-party API will be the **RAWG Video Games Database API**. I plan to use RAWG to fetch Zelda game data such as game titles, descriptions, release dates, platforms, screenshots, ratings, and other video game metadata.
+The primary third-party API will be the **MobyGames Video Games Database API**. I plan to use MobyGames to fetch Zelda game data such as game titles, descriptions, release dates, platforms, screenshots, ratings, and other video game metadata.
 
 I may also use the **Hyrule Compendium API** as a secondary API for Zelda-specific encyclopedia content. This could include creatures, monsters, materials, equipment, treasures, descriptions, categories, and images from Breath of the Wild / Tears of the Kingdom-style compendium data.
 
-RAWG will be used for the main game-level data. The Hyrule Compendium API would be used as an optional extra feature to make the site feel more like a complete Zelda archive.
+MobyGames will be used for the main game-level data. The Hyrule Compendium API would be used as an optional extra feature to make the site feel more like a complete Zelda archive. The MobyGames API is integrated through the ASP.NET Core backend so the API key is not exposed in the frontend. The React /mobygames page displays third-party Zelda metadata including titles, MobyGames IDs, Moby scores, descriptions, platforms, cover images, and required attribution.
+
+The development seed endpoint creates 500 simulated domain records, 50 simulated users, and 1,000 interaction records. These records make the app feel populated while keeping simulated data separate from real OAuth users and real third-party API data.
 
 ## Advanced Integration
 
