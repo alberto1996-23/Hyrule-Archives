@@ -22,6 +22,9 @@ export type CurrentUser = {
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   const response = await fetch(`${API_BASE_URL}/api/me`, {
     method: "GET",
+
+    // Important:
+    // This sends the login cookie to the backend.
     credentials: "include",
   });
 
@@ -195,6 +198,44 @@ export async function getMobyGamesZeldaData(): Promise<MobyGame[]> {
 
   if (!response.ok) {
     throw new Error("Unable to load MobyGames Zelda data.");
+  }
+
+  return response.json();
+}
+
+// This type matches GameReleaseDto from the backend.
+// A game can have many release records because it may release on
+// different platforms or in different regions.
+export type GameRelease = {
+  id: string;
+  platformName: string;
+  regionName: string;
+  regionCode: string;
+  releaseDate: string;
+  source: string;
+};
+
+// This type matches GameDetailDto from the backend.
+// This is used on the specific game page.
+export type GameDetail = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  imageUrl: string | null;
+  releases: GameRelease[];
+};
+
+// This gets one specific game from the backend by ID.
+// We use this on /games/[id].
+export async function getGameById(gameId: string): Promise<GameDetail> {
+  const response = await fetch(`${API_BASE_URL}/api/games/${gameId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to load this game.");
   }
 
   return response.json();
