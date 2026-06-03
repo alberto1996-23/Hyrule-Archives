@@ -26,6 +26,20 @@ public static class MobyGamesEndpoints
 
                 return Results.Ok(games);
             }
+            catch (MobyGamesApiException error)
+            {
+                // Third-party API issues should not look like our own server crashed.
+                // Return the upstream signal so the frontend can distinguish temporary
+                // MobyGames failures from bugs in the local backend.
+                var statusCode = error.StatusCode == StatusCodes.Status429TooManyRequests
+                    ? StatusCodes.Status429TooManyRequests
+                    : StatusCodes.Status502BadGateway;
+
+                return Results.Problem(
+                    statusCode: statusCode,
+                    title: "Unable to load MobyGames data.",
+                    detail: error.Message);
+            }
             catch (InvalidOperationException error)
             {
                 return ApiErrors.InternalServerError(error.Message, "Unable to load MobyGames data.");
@@ -66,6 +80,17 @@ public static class MobyGamesEndpoints
                 var result = await gameService.UpsertFromMobyGamesAsync(mobyGame);
 
                 return Results.Ok(result);
+            }
+            catch (MobyGamesApiException error)
+            {
+                var statusCode = error.StatusCode == StatusCodes.Status429TooManyRequests
+                    ? StatusCodes.Status429TooManyRequests
+                    : StatusCodes.Status502BadGateway;
+
+                return Results.Problem(
+                    statusCode: statusCode,
+                    title: "Unable to import MobyGames data.",
+                    detail: error.Message);
             }
             catch (InvalidOperationException error)
             {

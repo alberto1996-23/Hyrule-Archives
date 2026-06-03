@@ -1,5 +1,7 @@
 using System.Text.Json;
 using HyruleArchives.DTOs;
+using HyruleArchives.Infrastructure;
+using Microsoft.Extensions.Caching.Memory;
 using System.Text.RegularExpressions;
 
 namespace HyruleArchives.Services;
@@ -8,15 +10,27 @@ public class MobyGamesService
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
+    private readonly IMemoryCache _memoryCache;
 
-    public MobyGamesService(HttpClient httpClient, IConfiguration configuration)
+    private static readonly TimeSpan ZeldaSearchCacheDuration = TimeSpan.FromMinutes(10);
+    private static readonly TimeSpan GameByIdCacheDuration = TimeSpan.FromMinutes(20);
+
+    public MobyGamesService(HttpClient httpClient, IConfiguration configuration, IMemoryCache memoryCache)
     {
         _httpClient = httpClient;
         _configuration = configuration;
+        _memoryCache = memoryCache;
     }
 
     public async Task<List<MobyGameDto>> SearchZeldaGamesAsync()
     {
+        // Cache the Zelda search list so normal page refreshes do not repeatedly hit the
+        // third-party API and trigger avoidable upstream failures or rate limits.
+        if (_memoryCache.TryGetValue("mobygames-zelda-search", out List<MobyGameDto>? cachedGames) && cachedGames is not null)
+        {
+            return cachedGames;
+        }
+
         // Read the API key from user-secrets or environment variables.
         // This keeps the key out of GitHub and out of the React frontend.
         var apiKey = _configuration["MobyGames:ApiKey"];
@@ -49,7 +63,8 @@ public class MobyGamesService
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException(
+            throw new MobyGamesApiException(
+                (int)response.StatusCode,
                 $"MobyGames API request failed with status code {(int)response.StatusCode}."
             );
         }
@@ -74,6 +89,8 @@ public class MobyGamesService
             results.Add(ParseGame(gameElement));
         }
 
+        _memoryCache.Set("mobygames-zelda-search", results, ZeldaSearchCacheDuration);
+
         return results;
     }
 
@@ -82,6 +99,13 @@ public class MobyGamesService
     // into a local record that the rest of the app can interact with.
     public async Task<MobyGameDto?> GetGameByIdAsync(int mobyGameId)
     {
+        var cacheKey = $"mobygames-game-{mobyGameId}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out MobyGameDto? cachedGame))
+        {
+            return cachedGame;
+        }
+
         var apiKey = _configuration["MobyGames:ApiKey"];
 
         if (string.IsNullOrWhiteSpace(apiKey))
@@ -104,7 +128,8 @@ public class MobyGamesService
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException(
+            throw new MobyGamesApiException(
+                (int)response.StatusCode,
                 $"MobyGames API request failed with status code {(int)response.StatusCode}."
             );
         }
@@ -113,7 +138,10 @@ public class MobyGamesService
 
         using var document = JsonDocument.Parse(json);
 
-        return ParseGame(document.RootElement);
+        var parsedGame = ParseGame(document.RootElement);
+        _memoryCache.Set(cacheKey, parsedGame, GameByIdCacheDuration);
+
+        return parsedGame;
     }
 
     private static MobyGameDto ParseGame(JsonElement gameElement)
