@@ -7,5 +7,8 @@ public record CollectionItemDto(
     string GameSlug,
     string? ImageUrl,
     string Status,
-    DateTimeOffset CreatedAt
+    DateTimeOffset CreatedAt,
+    bool IsFavorite,
+    DateTimeOffset? FavoritedAt,
+    DateTimeOffset UpdatedAt
 );

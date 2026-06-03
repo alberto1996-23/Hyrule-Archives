@@ -28,4 +28,10 @@ public class Game
     public List<GameRelease> Releases { get; set; } = new();
     
     public List<CollectionItem> CollectionItems { get; set; } = new();
+
+    public List<Comment> Comments { get; set; } = new();
+
+    public List<Reaction> Reactions { get; set; } = new();
+
+    public List<ActivityEvent> ActivityEvents { get; set; } = new();
 }

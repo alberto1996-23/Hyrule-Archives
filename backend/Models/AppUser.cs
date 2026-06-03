@@ -23,4 +23,10 @@ public class AppUser
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     
     public List<CollectionItem> CollectionItems { get; set; } = new();
+
+    public List<Comment> Comments { get; set; } = new();
+
+    public List<Reaction> Reactions { get; set; } = new();
+
+    public List<ActivityEvent> ActivityEvents { get; set; } = new();
 }

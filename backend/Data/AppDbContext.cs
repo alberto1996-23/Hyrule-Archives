@@ -16,6 +16,9 @@ public class AppDbContext : DbContext
     public DbSet<Region> Regions => Set<Region>();
     public DbSet<GameRelease> GameReleases => Set<GameRelease>();
     public DbSet<CollectionItem> CollectionItems => Set<CollectionItem>();
+    public DbSet<Comment> Comments => Set<Comment>();
+    public DbSet<Reaction> Reactions => Set<Reaction>();
+    public DbSet<ActivityEvent> ActivityEvents => Set<ActivityEvent>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,7 +68,50 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<CollectionItem>()
             .HasIndex(item => new { item.AppUserId, item.GameId })
             .IsUnique();
-            
+        
+        modelBuilder.Entity<Comment>()
+            .HasOne(comment => comment.AppUser)
+            .WithMany(user => user.Comments)
+            .HasForeignKey(comment => comment.AppUserId);
+
+        modelBuilder.Entity<Comment>()
+            .HasOne(comment => comment.Game)
+            .WithMany(game => game.Comments)
+            .HasForeignKey(comment => comment.GameId);
+
+        modelBuilder.Entity<Comment>()
+            .HasIndex(comment => new { comment.GameId, comment.CreatedAt });
+
+        modelBuilder.Entity<Reaction>()
+            .HasOne(reaction => reaction.AppUser)
+            .WithMany(user => user.Reactions)
+            .HasForeignKey(reaction => reaction.AppUserId);
+
+        modelBuilder.Entity<Reaction>()
+            .HasOne(reaction => reaction.Game)
+            .WithMany(game => game.Reactions)
+            .HasForeignKey(reaction => reaction.GameId);
+
+        // One user can only have one reaction per game.
+        // If they change from Like to Dislike, update the existing row.
+        modelBuilder.Entity<Reaction>()
+            .HasIndex(reaction => new { reaction.AppUserId, reaction.GameId })
+            .IsUnique();
+
+        modelBuilder.Entity<ActivityEvent>()
+            .HasOne(activity => activity.AppUser)
+            .WithMany(user => user.ActivityEvents)
+            .HasForeignKey(activity => activity.AppUserId);
+
+        modelBuilder.Entity<ActivityEvent>()
+            .HasOne(activity => activity.Game)
+            .WithMany(game => game.ActivityEvents)
+            .HasForeignKey(activity => activity.GameId)
+            .OnDelete(DeleteBehavior.SetNull);
+        
+        modelBuilder.Entity<ActivityEvent>()
+            .HasIndex(activity => activity.CreatedAt);
+
         SeedData(modelBuilder);
     }
 

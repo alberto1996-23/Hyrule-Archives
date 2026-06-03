@@ -3,6 +3,7 @@ using HyruleArchives.Endpoints;
 using HyruleArchives.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using HyruleArchives.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +77,13 @@ builder.Services.AddHttpClient<MobyGamesService>();
 // This is used only for local development seed data.
 builder.Services.AddScoped<SeedService>();
 
+// Adds SignalR services to the backend.
+// SignalR lets the server push live updates to connected React clients.
+builder.Services.AddSignalR();
+
+// Handles creating activity records and broadcasting them through SignalR.
+builder.Services.AddScoped<ActivityEventService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -109,6 +117,15 @@ app.MapAuthEndpoints();
 app.MapUserEndpoints();
 app.MapCollectionEndpoints();
 app.MapMobyGamesEndpoints();
+app.MapActivityEndpoints();
+app.MapMyActivityEndpoints();
+app.MapCommentEndpoints();
+app.MapReactionEndpoints();
+
+// Exposes the SignalR activity feed hub.
+// React will connect to this URL later:
+// http://localhost:5154/hubs/activity
+app.MapHub<ActivityHub>("/hubs/activity");
 
 // Only expose seed endpoints during local development.
 if (app.Environment.IsDevelopment())

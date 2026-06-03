@@ -17,6 +17,45 @@ namespace backend.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.8");
 
+            modelBuilder.Entity("HyruleArchives.Models.ActivityEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("GameId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("ActivityEvents");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -67,12 +106,21 @@ namespace backend.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTimeOffset?>("FavoritedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("GameId")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -83,6 +131,44 @@ namespace backend.Migrations
                         .IsUnique();
 
                     b.ToTable("CollectionItems");
+                });
+
+            modelBuilder.Entity("HyruleArchives.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("GameId", "CreatedAt");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("HyruleArchives.Models.Game", b =>
@@ -320,6 +406,39 @@ namespace backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.Reaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("AppUserId", "GameId")
+                        .IsUnique();
+
+                    b.ToTable("Reactions");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.Region", b =>
                 {
                     b.Property<Guid>("Id")
@@ -370,6 +489,24 @@ namespace backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.ActivityEvent", b =>
+                {
+                    b.HasOne("HyruleArchives.Models.AppUser", "AppUser")
+                        .WithMany("ActivityEvents")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HyruleArchives.Models.Game", "Game")
+                        .WithMany("ActivityEvents")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.CollectionItem", b =>
                 {
                     b.HasOne("HyruleArchives.Models.AppUser", "AppUser")
@@ -380,6 +517,25 @@ namespace backend.Migrations
 
                     b.HasOne("HyruleArchives.Models.Game", "Game")
                         .WithMany("CollectionItems")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("HyruleArchives.Models.Comment", b =>
+                {
+                    b.HasOne("HyruleArchives.Models.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HyruleArchives.Models.Game", "Game")
+                        .WithMany("Comments")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -416,14 +572,45 @@ namespace backend.Migrations
                     b.Navigation("Region");
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.Reaction", b =>
+                {
+                    b.HasOne("HyruleArchives.Models.AppUser", "AppUser")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HyruleArchives.Models.Game", "Game")
+                        .WithMany("Reactions")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.AppUser", b =>
                 {
+                    b.Navigation("ActivityEvents");
+
                     b.Navigation("CollectionItems");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("HyruleArchives.Models.Game", b =>
                 {
+                    b.Navigation("ActivityEvents");
+
                     b.Navigation("CollectionItems");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Reactions");
 
                     b.Navigation("Releases");
                 });

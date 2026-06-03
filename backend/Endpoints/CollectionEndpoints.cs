@@ -54,7 +54,10 @@ public static class CollectionEndpoints
                     item.Game.Slug,
                     item.Game.ImageUrl,
                     item.Status,
-                    item.CreatedAt
+                    item.CreatedAt,
+                    item.IsFavorite,
+                    item.FavoritedAt,
+                    item.UpdatedAt
                 ))
                 .ToList();
 
@@ -126,7 +129,10 @@ public static class CollectionEndpoints
                 collectionItem.Id,
                 collectionItem.GameId,
                 collectionItem.Status,
-                collectionItem.CreatedAt
+                collectionItem.CreatedAt,
+                collectionItem.IsFavorite,
+                collectionItem.FavoritedAt,
+                collectionItem.UpdatedAt
             });
         })
         .WithName("AddGameToMyCollection")
@@ -185,7 +191,10 @@ public static class CollectionEndpoints
                 item.Id,
                 item.GameId,
                 item.Status,
-                item.CreatedAt
+                item.CreatedAt,
+                item.IsFavorite,
+                item.FavoritedAt,
+                item.UpdatedAt
             });
         })
         .WithName("UpdateCollectionItem")
