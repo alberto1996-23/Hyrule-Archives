@@ -14,12 +14,40 @@ export default function App() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
-        <Route path="/games" element={<GamesPage />} />
-        <Route path="/games/moby/:mobyGameId" element={<GameDetailPage />} />
-        <Route path="/trends" element={<TrendsPage />} />
+        <Route
+          path="/games"
+          element={
+            <RequireAuth>
+              <GamesPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/games/moby/:mobyGameId"
+          element={
+            <RequireAuth>
+              <GameDetailPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/trends"
+          element={
+            <RequireAuth>
+              <TrendsPage />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/dashboard"
           element={
@@ -28,7 +56,7 @@ export default function App() {
             </RequireAuth>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Route>
     </Routes>
   );

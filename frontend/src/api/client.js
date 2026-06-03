@@ -3,14 +3,27 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5154
 // This helper sends every request with cookies enabled so the React app can work
 // with the ASP.NET Core cookie-based login flow.
 async function apiFetch(path, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
-    ...options,
-  });
+  let response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        ...(options.headers ?? {}),
+      },
+      ...options,
+    });
+  } catch {
+    // Browser-level fetch failures usually mean the backend is down or a redirect/CORS issue occurred
+    // before JavaScript could read the response. Give the UI a clearer message than the raw fetch error.
+    const error = new Error(
+      'Unable to reach the backend. Make sure the ASP.NET server is running and restart it after backend changes.',
+    );
+    error.status = 0;
+    throw error;
+  }
 
   const contentType = response.headers.get('content-type') ?? '';
   const isJson = contentType.includes('application/json');

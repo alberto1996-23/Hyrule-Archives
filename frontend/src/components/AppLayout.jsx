@@ -15,6 +15,10 @@ export default function AppLayout() {
     let isMounted = true;
 
     async function loadCurrentUser() {
+      if (isMounted) {
+        setAuthLoading(true);
+      }
+
       try {
         const user = await getCurrentUser();
 
@@ -58,16 +62,18 @@ export default function AppLayout() {
   );
 
   async function handleLogout() {
+    setAuthError('');
+
     try {
       await logout();
       setCurrentUser(null);
-      navigate('/');
+      navigate('/login');
     } catch (error) {
       setAuthError(error.message);
     }
   }
 
-  const homeTarget = currentUser ? '/dashboard' : '/';
+  const homeTarget = currentUser ? '/' : '/login';
 
   return (
     <div>

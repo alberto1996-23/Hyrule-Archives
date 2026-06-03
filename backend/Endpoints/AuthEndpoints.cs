@@ -37,6 +37,9 @@ public static class AuthEndpoints
 
         group.MapPost("/logout", async (HttpContext httpContext) =>
         {
+            // Logout should be safe to call even if the browser already lost its auth cookie.
+            // Making this endpoint idempotent prevents the frontend from hitting a redirect-based
+            // auth failure when a logged-out user or expired session triggers logout again.
             await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return Results.Ok(new
@@ -44,7 +47,6 @@ public static class AuthEndpoints
                 message = "Logged out successfully."
             });
         })
-        .RequireAuthorization()
         .WithName("Logout")
         .WithSummary("Logs out the current user.");
 

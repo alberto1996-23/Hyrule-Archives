@@ -36,13 +36,14 @@ public class MobyGamesService
         // title=zelda means "title contains zelda".
         // format=normal gives us richer data like descriptions, platforms,
         // sample cover, and sample screenshots.
-        // limit=10 keeps requests small for the assignment demo.
+        // limit=100 gives the frontend enough Zelda titles to build a more useful
+        // chronological series list from the original 1986 release through modern entries.
         var url =
             $"https://api.mobygames.com/v1/games" +
             $"?api_key={encodedApiKey}" +
             $"&title=zelda" +
             $"&format=normal" +
-            $"&limit=10";
+            $"&limit=100";
 
         var response = await _httpClient.GetAsync(url);
 
