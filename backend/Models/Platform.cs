@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// Platforms describe consoles or systems such as NES, Switch, or GameCube.
 public class Platform
 {
     public Guid Id { get; set; }

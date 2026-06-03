@@ -70,64 +70,106 @@ public class MobyGamesService
 
         foreach (var gameElement in gamesElement.EnumerateArray())
         {
-            var gameId = GetInt(gameElement, "game_id");
-            var title = GetString(gameElement, "title") ?? "Unknown Title";
-            var description = StripHtml(GetString(gameElement, "description"));
-            var mobyUrl = GetString(gameElement, "moby_url");
-            var mobyScore = GetNullableDouble(gameElement, "moby_score");
-
-            var coverImage = GetNestedString(gameElement, "sample_cover", "image");
-            var coverThumbnail = GetNestedString(gameElement, "sample_cover", "thumbnail_image");
-
-            string? screenshotImage = null;
-
-            // sample_screenshots is an array, so we grab the first screenshot if one exists.
-            if (gameElement.TryGetProperty("sample_screenshots", out var screenshotsElement) &&
-                screenshotsElement.ValueKind == JsonValueKind.Array)
-            {
-                var firstScreenshot = screenshotsElement.EnumerateArray().FirstOrDefault();
-
-                if (firstScreenshot.ValueKind == JsonValueKind.Object)
-                {
-                    screenshotImage = GetString(firstScreenshot, "image");
-                }
-            }
-
-            var platforms = new List<MobyPlatformDto>();
-
-            // platforms is an array of platform/release objects.
-            if (gameElement.TryGetProperty("platforms", out var platformsElement) &&
-                platformsElement.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var platformElement in platformsElement.EnumerateArray())
-                {
-                    var platformId = GetInt(platformElement, "platform_id");
-                    var platformName = GetString(platformElement, "platform_name") ?? "Unknown Platform";
-                    var firstReleaseDate = GetString(platformElement, "first_release_date");
-
-                    platforms.Add(new MobyPlatformDto(
-                        platformId,
-                        platformName,
-                        firstReleaseDate
-                    ));
-                }
-            }
-
-            results.Add(new MobyGameDto(
-                gameId,
-                title,
-                description,
-                mobyScore,
-                mobyUrl,
-                coverImage,
-                coverThumbnail,
-                screenshotImage,
-                platforms,
-                "Data by MobyGames.com"
-            ));
+            results.Add(ParseGame(gameElement));
         }
 
         return results;
+    }
+
+    // This method fetches one exact MobyGames title by id.
+    // It powers the import endpoint so Swagger can turn a third-party record
+    // into a local record that the rest of the app can interact with.
+    public async Task<MobyGameDto?> GetGameByIdAsync(int mobyGameId)
+    {
+        var apiKey = _configuration["MobyGames:ApiKey"];
+
+        if (string.IsNullOrWhiteSpace(apiKey))
+        {
+            throw new InvalidOperationException("MobyGames API key is not configured.");
+        }
+
+        var encodedApiKey = Uri.EscapeDataString(apiKey);
+        var url =
+            $"https://api.mobygames.com/v1/games/{mobyGameId}" +
+            $"?api_key={encodedApiKey}" +
+            $"&format=normal";
+
+        var response = await _httpClient.GetAsync(url);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException(
+                $"MobyGames API request failed with status code {(int)response.StatusCode}."
+            );
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        using var document = JsonDocument.Parse(json);
+
+        return ParseGame(document.RootElement);
+    }
+
+    private static MobyGameDto ParseGame(JsonElement gameElement)
+    {
+        var gameId = GetInt(gameElement, "game_id");
+        var title = GetString(gameElement, "title") ?? "Unknown Title";
+        var description = StripHtml(GetString(gameElement, "description"));
+        var mobyUrl = GetString(gameElement, "moby_url");
+        var mobyScore = GetNullableDouble(gameElement, "moby_score");
+
+        var coverImage = GetNestedString(gameElement, "sample_cover", "image");
+        var coverThumbnail = GetNestedString(gameElement, "sample_cover", "thumbnail_image");
+
+        string? screenshotImage = null;
+
+        if (gameElement.TryGetProperty("sample_screenshots", out var screenshotsElement) &&
+            screenshotsElement.ValueKind == JsonValueKind.Array)
+        {
+            var firstScreenshot = screenshotsElement.EnumerateArray().FirstOrDefault();
+
+            if (firstScreenshot.ValueKind == JsonValueKind.Object)
+            {
+                screenshotImage = GetString(firstScreenshot, "image");
+            }
+        }
+
+        var platforms = new List<MobyPlatformDto>();
+
+        if (gameElement.TryGetProperty("platforms", out var platformsElement) &&
+            platformsElement.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var platformElement in platformsElement.EnumerateArray())
+            {
+                var platformId = GetInt(platformElement, "platform_id");
+                var platformName = GetString(platformElement, "platform_name") ?? "Unknown Platform";
+                var firstReleaseDate = GetString(platformElement, "first_release_date");
+
+                platforms.Add(new MobyPlatformDto(
+                    platformId,
+                    platformName,
+                    firstReleaseDate
+                ));
+            }
+        }
+
+        return new MobyGameDto(
+            gameId,
+            title,
+            description,
+            mobyScore,
+            mobyUrl,
+            coverImage,
+            coverThumbnail,
+            screenshotImage,
+            platforms,
+            "Data by MobyGames.com"
+        );
     }
 
     // Helper method for safely reading string values from JSON.

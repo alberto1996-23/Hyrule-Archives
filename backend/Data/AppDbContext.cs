@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Data;
 
+// The DbContext is EF Core's main entry point into the database.
+// It defines which tables exist and how the entities relate to one another.
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -10,6 +12,7 @@ public class AppDbContext : DbContext
     {
     }
 
+    // Each DbSet becomes a table-like entry point for queries and writes.
     public DbSet<AppUser> AppUsers => Set<AppUser>();
     public DbSet<Game> Games => Set<Game>();
     public DbSet<Platform> Platforms => Set<Platform>();
@@ -24,6 +27,8 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // These rules become database constraints and relationships.
+        // They protect data integrity even if the frontend sends bad data.
         modelBuilder.Entity<AppUser>()
             .HasIndex(user => new { user.OAuthProvider, user.OAuthSubjectId })
             .IsUnique();
@@ -112,6 +117,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ActivityEvent>()
             .HasIndex(activity => activity.CreatedAt);
 
+        // SeedData adds a small starter catalog that exists before any simulated or real users interact.
         SeedData(modelBuilder);
     }
 

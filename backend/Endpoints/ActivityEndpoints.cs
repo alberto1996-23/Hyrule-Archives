@@ -1,3 +1,4 @@
+using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
@@ -23,6 +24,17 @@ public static class ActivityEndpoints
         .WithName("GetRecentPublicActivity")
         .WithSummary("Gets recent public community activity.");
 
+        group.MapGet("/games/{gameId:guid}", async (
+            Guid gameId,
+            ActivityEventService activityEventService) =>
+        {
+            var activity = await activityEventService.GetRecentPublicActivityForGameAsync(gameId);
+
+            return Results.Ok(activity);
+        })
+        .WithName("GetRecentPublicActivityForGame")
+        .WithSummary("Gets recent public community activity for a specific game.");
+
         return group;
     }
 
@@ -45,7 +57,7 @@ public static class ActivityEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var activity = await activityEventService.GetUserActivityAsync(user.Id);

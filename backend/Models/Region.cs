@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// Regions describe where a release happened, such as Japan, North America, or Global.
 public class Region
 {
     public Guid Id { get; set; }

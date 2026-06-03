@@ -1,5 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+using HyruleArchives.Validation;
+
 namespace HyruleArchives.DTOs;
 
-public record AddCollectionItemRequest(
-    Guid GameId
-);
+public class AddCollectionItemRequest
+{
+    [NotEmptyGuid]
+    public Guid GameId { get; set; }
+}

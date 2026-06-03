@@ -90,6 +90,21 @@ public class ActivityEventService
             .ToList();
     }
 
+    public async Task<List<ActivityEventDto>> GetRecentPublicActivityForGameAsync(Guid gameId, int limit = 25)
+    {
+        var activityEvents = await _dbContext.ActivityEvents
+            .Include(activity => activity.AppUser)
+            .Include(activity => activity.Game)
+            .Where(activity => activity.IsPublic && activity.GameId == gameId)
+            .ToListAsync();
+
+        return activityEvents
+            .OrderByDescending(activity => activity.CreatedAt)
+            .Take(limit)
+            .Select(ToDto)
+            .ToList();
+    }
+
     // Gets activity for one signed-in user.
     //
     // This can power the logged-in dashboard's "recent activity" section.

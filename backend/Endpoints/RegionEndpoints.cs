@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
 
+// Region endpoints expose where releases happened, such as Japan or Global.
 public static class RegionEndpoints
 {
     public static RouteGroupBuilder MapRegionEndpoints(this IEndpointRouteBuilder app)
@@ -13,6 +14,7 @@ public static class RegionEndpoints
 
         group.MapGet("/", async (AppDbContext dbContext) =>
         {
+            // Regions are public metadata, so this endpoint does not require login.
             var regions = await dbContext.Regions
                 .OrderBy(region => region.Name)
                 .Select(region => new RegionDto(

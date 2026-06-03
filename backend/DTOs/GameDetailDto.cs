@@ -1,5 +1,6 @@
 namespace HyruleArchives.DTOs;
 
+// This DTO powers a detail page where the frontend needs nested release metadata.
 public record GameDetailDto(
     Guid Id,
     string Title,
@@ -9,6 +10,7 @@ public record GameDetailDto(
     List<GameReleaseDto> Releases
 );
 
+// Each release row tells the client where and when one version of the game launched.
 public record GameReleaseDto(
     Guid Id,
     string PlatformName,

@@ -1,5 +1,6 @@
 using HyruleArchives.Data;
 using HyruleArchives.DTOs;
+using HyruleArchives.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
@@ -11,10 +12,37 @@ public static class GameEndpoints
         var group = app.MapGroup("/api/games")
             .WithTags("Games");
 
-        group.MapGet("/", async (AppDbContext dbContext) =>
+        group.MapGet("/", async (
+            string? search,
+            Guid? platformId,
+            Guid? regionId,
+            AppDbContext dbContext) =>
         {
-            var games = await dbContext.Games
+            var query = dbContext.Games
                 .Include(game => game.Releases)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var trimmedSearch = search.Trim();
+                query = query.Where(game =>
+                    game.Title.Contains(trimmedSearch) ||
+                    (game.Summary != null && game.Summary.Contains(trimmedSearch)));
+            }
+
+            if (platformId.HasValue)
+            {
+                query = query.Where(game =>
+                    game.Releases.Any(release => release.PlatformId == platformId.Value));
+            }
+
+            if (regionId.HasValue)
+            {
+                query = query.Where(game =>
+                    game.Releases.Any(release => release.RegionId == regionId.Value));
+            }
+
+            var games = await query
                 .OrderBy(game => game.Title)
                 .Select(game => new GameSummaryDto(
                     game.Id,
@@ -42,10 +70,7 @@ public static class GameEndpoints
 
             if (game is null)
             {
-                return Results.NotFound(new
-                {
-                    message = "Game was not found."
-                });
+                return ApiErrors.NotFound("Game was not found.");
             }
 
             var dto = new GameDetailDto(

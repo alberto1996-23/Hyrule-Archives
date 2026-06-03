@@ -1,5 +1,6 @@
 using HyruleArchives.Data;
 using HyruleArchives.DTOs;
+using HyruleArchives.Infrastructure;
 using HyruleArchives.Models;
 using HyruleArchives.Services;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +45,7 @@ public static class ReactionEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var game = await dbContext.Games
@@ -52,12 +53,12 @@ public static class ReactionEndpoints
 
             if (game is null)
             {
-                return Results.NotFound(new { message = "Game was not found." });
+                return ApiErrors.NotFound("Game was not found.");
             }
 
             if (request.Value != "Like" && request.Value != "Dislike")
             {
-                return Results.BadRequest(new { message = "Reaction must be Like or Dislike." });
+                return ApiErrors.BadRequest("Reaction must be Like or Dislike.");
             }
 
             var reaction = await dbContext.Reactions
@@ -129,7 +130,7 @@ public static class ReactionEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var reaction = await dbContext.Reactions
@@ -140,7 +141,7 @@ public static class ReactionEndpoints
 
             if (reaction is null)
             {
-                return Results.NotFound(new { message = "Reaction was not found." });
+                return ApiErrors.NotFound("Reaction was not found.");
             }
 
             dbContext.Reactions.Remove(reaction);

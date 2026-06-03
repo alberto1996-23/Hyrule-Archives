@@ -26,6 +26,21 @@ public static class DevSeedEndpoints
         .WithName("SeedMilestone3")
         .WithSummary("Seeds 500 domain records, 50 simulated users, and 1,000 interactions.");
 
+        // POST /api/dev/seed/final
+        //
+        // This creates the final-project scale dataset:
+        // - 5,000 simulated domain records
+        // - 500 simulated users
+        // - 10,000+ interaction records across collections, comments, reactions, and activity
+        group.MapPost("/final", async (SeedService seedService) =>
+        {
+            var result = await seedService.SeedFinalProjectAsync();
+
+            return Results.Ok(result);
+        })
+        .WithName("SeedFinalProject")
+        .WithSummary("Seeds the final-project scale dataset for local development demos.");
+
         return group;
     }
 }

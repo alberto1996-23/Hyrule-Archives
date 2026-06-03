@@ -1,5 +1,6 @@
 using HyruleArchives.Data;
 using HyruleArchives.DTOs;
+using HyruleArchives.Infrastructure;
 using HyruleArchives.Models;
 using HyruleArchives.Services;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +59,7 @@ public static class CommentEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var game = await dbContext.Games
@@ -66,7 +67,7 @@ public static class CommentEndpoints
 
             if (game is null)
             {
-                return Results.NotFound(new { message = "Game was not found." });
+                return ApiErrors.NotFound("Game was not found.");
             }
 
             var comment = new Comment
@@ -120,7 +121,7 @@ public static class CommentEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var comment = await dbContext.Comments
@@ -129,12 +130,12 @@ public static class CommentEndpoints
 
             if (comment is null || comment.IsDeleted)
             {
-                return Results.NotFound(new { message = "Comment was not found." });
+                return ApiErrors.NotFound("Comment was not found.");
             }
 
             if (comment.AppUserId != user.Id)
             {
-                return Results.Forbid();
+                return ApiErrors.Forbidden("You can only edit your own comments.");
             }
 
             comment.Body = request.Body.Trim();
@@ -177,7 +178,7 @@ public static class CommentEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var comment = await dbContext.Comments
@@ -186,12 +187,12 @@ public static class CommentEndpoints
 
             if (comment is null || comment.IsDeleted)
             {
-                return Results.NotFound(new { message = "Comment was not found." });
+                return ApiErrors.NotFound("Comment was not found.");
             }
 
             if (comment.AppUserId != user.Id)
             {
-                return Results.Forbid();
+                return ApiErrors.Forbidden("You can only delete your own comments.");
             }
 
             comment.IsDeleted = true;

@@ -1,4 +1,5 @@
 using HyruleArchives.DTOs;
+using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
@@ -17,7 +18,7 @@ public static class UserEndpoints
 
             if (user is null)
             {
-                return Results.Unauthorized();
+                return ApiErrors.Unauthorized();
             }
 
             var dto = new CurrentUserDto(

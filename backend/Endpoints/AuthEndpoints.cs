@@ -1,3 +1,4 @@
+using HyruleArchives.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -17,11 +18,9 @@ public static class AuthEndpoints
 
             if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
             {
-                return Results.Problem(
-                    title: "Google OAuth is not configured.",
-                    detail: "Set Authentication:Google:ClientId and Authentication:Google:ClientSecret using user-secrets or environment variables.",
-                    statusCode: StatusCodes.Status500InternalServerError
-                );
+                return ApiErrors.InternalServerError(
+                    "Set Authentication:Google:ClientId and Authentication:Google:ClientSecret using user-secrets or environment variables.",
+                    "Google OAuth is not configured.");
             }
 
             var frontendBaseUrl = configuration["Frontend:BaseUrl"] ?? "http://localhost:3000";

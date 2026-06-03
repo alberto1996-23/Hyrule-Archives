@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
 
+// Platform endpoints expose the consoles/platforms that Zelda games can appear on.
 public static class PlatformEndpoints
 {
     public static RouteGroupBuilder MapPlatformEndpoints(this IEndpointRouteBuilder app)
@@ -13,6 +14,7 @@ public static class PlatformEndpoints
 
         group.MapGet("/", async (AppDbContext dbContext) =>
         {
+            // This is a simple read-only query that projects database rows into DTOs.
             var platforms = await dbContext.Platforms
                 .OrderBy(platform => platform.Name)
                 .Select(platform => new PlatformDto(

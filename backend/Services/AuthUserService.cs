@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Services;
 
+// This service translates an authenticated ClaimsPrincipal into an AppUser row.
+// If the OAuth user logs in for the first time, the service creates their local profile.
 public class AuthUserService
 {
     private readonly AppDbContext _dbContext;
@@ -16,6 +18,7 @@ public class AuthUserService
 
     public async Task<AppUser?> GetOrCreateCurrentUserAsync(ClaimsPrincipal principal)
     {
+        // If ASP.NET Core did not authenticate the request, there is no local user to load.
         if (principal.Identity?.IsAuthenticated != true)
         {
             return null;
@@ -28,6 +31,7 @@ public class AuthUserService
             return null;
         }
 
+        // Right now the app is using Google login, so the provider string is fixed.
         var provider = "Google";
 
         var existingUser = await _dbContext.AppUsers
@@ -40,6 +44,7 @@ public class AuthUserService
             return existingUser;
         }
 
+        // First-time login: create a local profile that other tables can reference safely.
         var email = principal.FindFirstValue(ClaimTypes.Email);
         var displayName = principal.FindFirstValue(ClaimTypes.Name);
 
