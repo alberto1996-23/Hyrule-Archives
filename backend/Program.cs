@@ -59,8 +59,12 @@ var authenticationBuilder = builder.Services.AddAuthentication(options =>
         // after logout or session expiry.
         OnRedirectToLogin = context =>
         {
+            var acceptsJson = context.Request.Headers.Accept.Any(value =>
+                !string.IsNullOrEmpty(value) &&
+                value.Contains("application/json", StringComparison.OrdinalIgnoreCase));
+
             if (context.Request.Path.StartsWithSegments("/api") ||
-                context.Request.Headers.Accept.Any(value => value.Contains("application/json", StringComparison.OrdinalIgnoreCase)))
+                acceptsJson)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Task.CompletedTask;
@@ -71,8 +75,12 @@ var authenticationBuilder = builder.Services.AddAuthentication(options =>
         },
         OnRedirectToAccessDenied = context =>
         {
+            var acceptsJson = context.Request.Headers.Accept.Any(value =>
+                !string.IsNullOrEmpty(value) &&
+                value.Contains("application/json", StringComparison.OrdinalIgnoreCase));
+
             if (context.Request.Path.StartsWithSegments("/api") ||
-                context.Request.Headers.Accept.Any(value => value.Contains("application/json", StringComparison.OrdinalIgnoreCase)))
+                acceptsJson)
             {
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
                 return Task.CompletedTask;
