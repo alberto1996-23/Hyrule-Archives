@@ -62,6 +62,18 @@ export function getMobyGamesZelda() {
   return apiFetch('/api/mobygames/zelda');
 }
 
+export function getZeldaCatalog() {
+  return apiFetch('/api/catalog/zelda');
+}
+
+export function getZeldaCatalogGameBySlug(slug) {
+  return apiFetch(`/api/catalog/zelda/${slug}`);
+}
+
+export function getZeldaCatalogGameByMobyGameId(mobyGameId) {
+  return apiFetch(`/api/catalog/zelda/by-mobygames-id/${mobyGameId}`);
+}
+
 export function importMobyGame(mobyGameId) {
   return apiFetch(`/api/mobygames/import/${mobyGameId}`, {
     method: 'POST',
@@ -70,6 +82,14 @@ export function importMobyGame(mobyGameId) {
 
 export function getLocalGame(localGameId) {
   return apiFetch(`/api/games/${localGameId}`);
+}
+
+export function getLocalGameBySlug(slug) {
+  return apiFetch(`/api/games/by-slug/${slug}`);
+}
+
+export function getLocalGameByMobyGameId(mobyGameId) {
+  return apiFetch(`/api/games/by-mobygames-id/${mobyGameId}`);
 }
 
 export function getGameComments(localGameId) {

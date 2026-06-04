@@ -45,11 +45,23 @@ public class GameService
 	public async Task<MobyGameImportResultDto> UpsertFromMobyGamesAsync(MobyGameDto mobyGame)
 	{
 		var externalApiId = $"mobygames-{mobyGame.MobyGameId}";
+		var normalizedSlug = ToSlug(mobyGame.Title);
 
 		// Reuse the same local row on repeated imports so reactions and comments stay attached.
 		var existingGame = await _dbContext.Games
 			.Include(game => game.Releases)
 			.FirstOrDefaultAsync(game => game.ExternalApiId == externalApiId);
+
+		// If an earlier local or seeded record already exists for the same Zelda title,
+		// upgrade that row in place instead of creating a duplicate alongside it.
+		if (existingGame is null)
+		{
+			existingGame = await _dbContext.Games
+				.Include(game => game.Releases)
+				.FirstOrDefaultAsync(game =>
+					game.Title == mobyGame.Title ||
+					game.Slug == normalizedSlug);
+		}
 
 		var wasCreated = existingGame is null;
 		var game = existingGame ?? new Game
@@ -62,6 +74,7 @@ public class GameService
 		game.Title = mobyGame.Title;
 		game.Summary = mobyGame.Description;
 		game.ImageUrl = mobyGame.CoverImage ?? mobyGame.CoverThumbnail ?? mobyGame.ScreenshotImage;
+		game.ExternalApiId = externalApiId;
 		game.Slug = await GenerateUniqueSlugAsync(mobyGame.Title, game.Id);
 
 		if (wasCreated)

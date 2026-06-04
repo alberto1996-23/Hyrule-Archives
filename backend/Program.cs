@@ -28,6 +28,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<AuthUserService>();
 builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<ZeldaCatalogService>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddValidation();
@@ -181,6 +182,7 @@ app.MapGet("/api/health", () =>
 .WithSummary("Checks whether the backend is running.");
 
 app.MapGameEndpoints();
+app.MapCatalogEndpoints();
 app.MapPlatformEndpoints();
 app.MapRegionEndpoints();
 app.MapAuthEndpoints();

@@ -12,6 +12,25 @@ public static class GameEndpoints
         var group = app.MapGroup("/api/games")
             .WithTags("Games");
 
+        static GameDetailDto MapGameDetailDto(HyruleArchives.Models.Game game) => new(
+            game.Id,
+            game.Title,
+            game.Slug,
+            game.Summary,
+            game.ImageUrl,
+            game.Releases
+                .OrderBy(release => release.ReleaseDate)
+                .Select(release => new GameReleaseDto(
+                    release.Id,
+                    release.Platform?.Name ?? "Unknown Platform",
+                    release.Region?.Name ?? "Unknown Region",
+                    release.Region?.Code ?? "UNKNOWN",
+                    release.ReleaseDate,
+                    release.Source
+                ))
+                .ToList()
+        );
+
         group.MapGet("/", async (
             string? search,
             Guid? platformId,
@@ -59,6 +78,46 @@ public static class GameEndpoints
         .WithName("GetGames")
         .WithSummary("Gets all Zelda games in the archive.");
 
+        group.MapGet("/by-slug/{slug}", async (string slug, AppDbContext dbContext) =>
+        {
+            var game = await dbContext.Games
+                .Include(game => game.Releases)
+                    .ThenInclude(release => release.Platform)
+                .Include(game => game.Releases)
+                    .ThenInclude(release => release.Region)
+                .FirstOrDefaultAsync(game => game.Slug == slug);
+
+            if (game is null)
+            {
+                return ApiErrors.NotFound("Game was not found.");
+            }
+
+            return Results.Ok(MapGameDetailDto(game));
+        })
+        .WithName("GetGameBySlug")
+        .WithSummary("Gets one Zelda game by slug with release information.");
+
+        group.MapGet("/by-mobygames-id/{mobyGameId:int}", async (int mobyGameId, AppDbContext dbContext) =>
+        {
+            var externalApiId = $"mobygames-{mobyGameId}";
+
+            var game = await dbContext.Games
+                .Include(game => game.Releases)
+                    .ThenInclude(release => release.Platform)
+                .Include(game => game.Releases)
+                    .ThenInclude(release => release.Region)
+                .FirstOrDefaultAsync(game => game.ExternalApiId == externalApiId);
+
+            if (game is null)
+            {
+                return ApiErrors.NotFound("Game was not found.");
+            }
+
+            return Results.Ok(MapGameDetailDto(game));
+        })
+        .WithName("GetGameByMobyGamesId")
+        .WithSummary("Gets one Zelda game by MobyGames id with release information.");
+
         group.MapGet("/{id:guid}", async (Guid id, AppDbContext dbContext) =>
         {
             var game = await dbContext.Games
@@ -73,26 +132,7 @@ public static class GameEndpoints
                 return ApiErrors.NotFound("Game was not found.");
             }
 
-            var dto = new GameDetailDto(
-                game.Id,
-                game.Title,
-                game.Slug,
-                game.Summary,
-                game.ImageUrl,
-                game.Releases
-                    .OrderBy(release => release.ReleaseDate)
-                    .Select(release => new GameReleaseDto(
-                        release.Id,
-                        release.Platform?.Name ?? "Unknown Platform",
-                        release.Region?.Name ?? "Unknown Region",
-                        release.Region?.Code ?? "UNKNOWN",
-                        release.ReleaseDate,
-                        release.Source
-                    ))
-                    .ToList()
-            );
-
-            return Results.Ok(dto);
+            return Results.Ok(MapGameDetailDto(game));
         })
         .WithName("GetGameById")
         .WithSummary("Gets one Zelda game with release information.");

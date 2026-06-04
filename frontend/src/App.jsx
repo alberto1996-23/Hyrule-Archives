@@ -33,6 +33,14 @@ export default function App() {
           }
         />
         <Route
+          path="/games/:gameSlug"
+          element={
+            <RequireAuth>
+              <GameDetailPage />
+            </RequireAuth>
+          }
+        />
+        <Route
           path="/games/moby/:mobyGameId"
           element={
             <RequireAuth>

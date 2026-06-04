@@ -489,6 +489,804 @@ namespace backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.ZeldaCatalogAvailability", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ZeldaCatalogGameId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ZeldaCatalogGameId", "Kind", "DisplayOrder");
+
+                    b.ToTable("ZeldaCatalogAvailabilities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000001"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nesLogo.png",
+                            Kind = 1,
+                            Name = "NES",
+                            Note = "Original 1986 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000002"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbaLogo.png",
+                            Kind = 2,
+                            Name = "Game Boy Advance",
+                            Note = "Classic NES Series port",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000003"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 3,
+                            Name = "Wii Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000004"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000005"),
+                            DisplayOrder = 3,
+                            ImagePath = "/platformLogos/3dsVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Nintendo 3DS Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000006"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000007"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nesLogo.png",
+                            Kind = 1,
+                            Name = "NES",
+                            Note = "Original 1987 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000008"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbaLogo.png",
+                            Kind = 2,
+                            Name = "Game Boy Advance",
+                            Note = "Classic NES Series port",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000009"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 3,
+                            Name = "Wii Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000010"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000011"),
+                            DisplayOrder = 3,
+                            ImagePath = "/platformLogos/3dsVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Nintendo 3DS Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000012"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000013"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/snesLogo.png",
+                            Kind = 1,
+                            Name = "SNES",
+                            Note = "Original 1991 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000014"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbaLogo.png",
+                            Kind = 2,
+                            Name = "Game Boy Advance",
+                            Note = "Game Boy Advance port with Four Swords bundle",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000015"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 3,
+                            Name = "Wii Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000016"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000017"),
+                            DisplayOrder = 3,
+                            ImagePath = "/platformLogos/3dsVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Nintendo 3DS Virtual Console",
+                            Note = "New Nintendo 3DS Virtual Console release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000018"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            Note = "Available in the SNES app",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000019"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbLogo.png",
+                            Kind = 1,
+                            Name = "Game Boy",
+                            Note = "Original 1993 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000004")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000020"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbcLogo.png",
+                            Kind = 2,
+                            Name = "Game Boy Color",
+                            Note = "Link's Awakening DX enhanced version",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000004")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000021"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/switchLogo.svg",
+                            Kind = 2,
+                            Name = "Nintendo Switch",
+                            Note = "Full Nintendo Switch remake",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000004")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000022"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Nintendo 3DS Virtual Console",
+                            Note = "3DS Virtual Console release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000004")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000023"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            Note = "Available in the Game Boy app",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000004")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000024"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/n64Logo.png",
+                            Kind = 1,
+                            Name = "Nintendo 64",
+                            Note = "Original 1998 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000005")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000025"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsLogo.svg",
+                            Kind = 2,
+                            Name = "Nintendo 3DS",
+                            Note = "Ocarina of Time 3D remake",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000005")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000026"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 3,
+                            Name = "Wii Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000005")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000027"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000005")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000028"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            Note = "Available in the Nintendo 64 app",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000005")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000029"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/n64Logo.png",
+                            Kind = 1,
+                            Name = "Nintendo 64",
+                            Note = "Original 2000 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000006")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000030"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsLogo.svg",
+                            Kind = 2,
+                            Name = "Nintendo 3DS",
+                            Note = "Majora's Mask 3D remake",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000006")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000031"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 3,
+                            Name = "Wii Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000006")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000032"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000006")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000033"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            Note = "Available in the Nintendo 64 app",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000006")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000034"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gamecubeLogo.jpeg",
+                            Kind = 1,
+                            Name = "GameCube",
+                            Note = "Original 2002 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000007")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000035"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/wiiuLogo.png",
+                            Kind = 2,
+                            Name = "Wii U",
+                            Note = "The Wind Waker HD remaster",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000007")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000036"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gamecubeLogo.jpeg",
+                            Kind = 1,
+                            Name = "GameCube",
+                            Note = "Original release family",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000008")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000037"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 2,
+                            Name = "Wii",
+                            Note = "Simultaneous launch-era version",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000008")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000038"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/wiiuLogo.png",
+                            Kind = 2,
+                            Name = "Wii U",
+                            Note = "Twilight Princess HD remaster",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000008")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000039"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/ndsLogo.png",
+                            Kind = 1,
+                            Name = "Nintendo DS",
+                            Note = "Original 2007 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000009")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000040"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            Note = "Wii U download release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000009")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000041"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/ndsLogo.png",
+                            Kind = 1,
+                            Name = "Nintendo DS",
+                            Note = "Original 2009 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000010")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000042"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/wiiUVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Wii U Virtual Console",
+                            Note = "Wii U download release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000010")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000043"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/WiiLogo.png",
+                            Kind = 1,
+                            Name = "Wii",
+                            Note = "Original 2011 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000011")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000044"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/switchLogo.svg",
+                            Kind = 2,
+                            Name = "Nintendo Switch",
+                            Note = "Skyward Sword HD remaster",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000011")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000045"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsLogo.svg",
+                            Kind = 1,
+                            Name = "Nintendo 3DS",
+                            Note = "Original 2013 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000012")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000046"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsLogo.svg",
+                            Kind = 1,
+                            Name = "Nintendo 3DS",
+                            Note = "Original 2015 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000013")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000047"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/wiiuLogo.png",
+                            Kind = 1,
+                            Name = "Wii U",
+                            Note = "Launch release family lead platform",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000014")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000048"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/switchLogo.svg",
+                            Kind = 2,
+                            Name = "Nintendo Switch",
+                            Note = "Launch-day Nintendo Switch release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000014")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000049"),
+                            DisplayOrder = 2,
+                            ImagePath = "/platformLogos/switch2Logo.png",
+                            Kind = 2,
+                            Name = "Nintendo Switch 2",
+                            Note = "Nintendo Switch 2 version",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000014")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000050"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/switchLogo.svg",
+                            Kind = 1,
+                            Name = "Nintendo Switch",
+                            Note = "Original 2023 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000015")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000051"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/switch2Logo.png",
+                            Kind = 2,
+                            Name = "Nintendo Switch 2",
+                            Note = "Nintendo Switch 2 version",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000015")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000052"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/switchLogo.svg",
+                            Kind = 1,
+                            Name = "Nintendo Switch",
+                            Note = "Original 2024 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000016")
+                        });
+                });
+
+            modelBuilder.Entity("HyruleArchives.Models.ZeldaCatalogCollectionAppearance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BoxArtPath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PlatformImagePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PlatformName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ZeldaCatalogGameId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ZeldaCatalogGameId", "DisplayOrder");
+
+                    b.ToTable("ZeldaCatalogCollectionAppearances");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000001"),
+                            BoxArtPath = "/boxart/zeldaCollectorEdition.webp",
+                            DisplayOrder = 1,
+                            Note = "Full game included on the compilation disc",
+                            PlatformImagePath = "/platformLogos/gamecubeLogo.jpeg",
+                            PlatformName = "GameCube",
+                            Title = "The Legend of Zelda: Collector's Edition",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000002"),
+                            BoxArtPath = "/boxart/zeldaCollectorEdition.webp",
+                            DisplayOrder = 1,
+                            Note = "Full game included on the compilation disc",
+                            PlatformImagePath = "/platformLogos/gamecubeLogo.jpeg",
+                            PlatformName = "GameCube",
+                            Title = "The Legend of Zelda: Collector's Edition",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000003"),
+                            BoxArtPath = "/boxart/zeldaCollectorEdition.webp",
+                            DisplayOrder = 1,
+                            Note = "Full game included on the compilation disc",
+                            PlatformImagePath = "/platformLogos/gamecubeLogo.jpeg",
+                            PlatformName = "GameCube",
+                            Title = "The Legend of Zelda: Collector's Edition",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000005")
+                        },
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000004"),
+                            BoxArtPath = "/boxart/zeldaCollectorEdition.webp",
+                            DisplayOrder = 1,
+                            Note = "Full game included on the compilation disc",
+                            PlatformImagePath = "/platformLogos/gamecubeLogo.jpeg",
+                            PlatformName = "GameCube",
+                            Title = "The Legend of Zelda: Collector's Edition",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000006")
+                        });
+                });
+
+            modelBuilder.Entity("HyruleArchives.Models.ZeldaCatalogGame", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BoxArtPath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MobyGameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MobyGameId")
+                        .IsUnique();
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("ZeldaCatalogGames");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000001"),
+                            BoxArtPath = "/boxart/zeldanes.jpeg",
+                            MobyGameId = 3393,
+                            Slug = "the-legend-of-zelda",
+                            Title = "The Legend of Zelda"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000002"),
+                            BoxArtPath = "/boxart/zelda2.jpg",
+                            MobyGameId = 7296,
+                            Slug = "zelda-ii-the-adventure-of-link",
+                            Title = "Zelda II: The Adventure of Link"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000003"),
+                            BoxArtPath = "/boxart/aLinktoThePast.jpg",
+                            MobyGameId = 6608,
+                            Slug = "a-link-to-the-past",
+                            Title = "The Legend of Zelda: A Link to the Past"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000004"),
+                            BoxArtPath = "/boxart/linksAwakening.png",
+                            MobyGameId = 4267,
+                            Slug = "links-awakening",
+                            Title = "The Legend of Zelda: Link's Awakening"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000005"),
+                            BoxArtPath = "/boxart/ocarinaOfTime.jpg",
+                            MobyGameId = 3549,
+                            Slug = "ocarina-of-time",
+                            Title = "The Legend of Zelda: Ocarina of Time"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000006"),
+                            BoxArtPath = "/boxart/majorasMask.jpg",
+                            MobyGameId = 3550,
+                            Slug = "majoras-mask",
+                            Title = "The Legend of Zelda: Majora's Mask"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000007"),
+                            BoxArtPath = "/boxart/windWaker.webp",
+                            MobyGameId = 8725,
+                            Slug = "the-wind-waker",
+                            Title = "The Legend of Zelda: The Wind Waker"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000008"),
+                            BoxArtPath = "/boxart/twilightPrincess.jpg",
+                            MobyGameId = 25103,
+                            Slug = "twilight-princess",
+                            Title = "The Legend of Zelda: Twilight Princess"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000009"),
+                            BoxArtPath = "/boxart/phantomHourglass.jpg",
+                            MobyGameId = 30522,
+                            Slug = "phantom-hourglass",
+                            Title = "The Legend of Zelda: Phantom Hourglass"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000010"),
+                            BoxArtPath = "/boxart/spiritTracks.jpg",
+                            MobyGameId = 44059,
+                            Slug = "spirit-tracks",
+                            Title = "The Legend of Zelda: Spirit Tracks"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000011"),
+                            BoxArtPath = "/boxart/skywardSword.webp",
+                            MobyGameId = 53708,
+                            Slug = "skyward-sword",
+                            Title = "The Legend of Zelda: Skyward Sword"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000012"),
+                            BoxArtPath = "/boxart/aLinkbetweenWorlds.jpg",
+                            MobyGameId = 62785,
+                            Slug = "a-link-between-worlds",
+                            Title = "The Legend of Zelda: A Link Between Worlds"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000013"),
+                            BoxArtPath = "/boxart/triforceHeroes.avif",
+                            MobyGameId = 75907,
+                            Slug = "tri-force-heroes",
+                            Title = "The Legend of Zelda: Tri Force Heroes"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000014"),
+                            BoxArtPath = "/boxart/breathOfTheWild.jpg",
+                            MobyGameId = 84595,
+                            Slug = "breath-of-the-wild",
+                            Title = "The Legend of Zelda: Breath of the Wild"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000015"),
+                            BoxArtPath = "/boxart/tearsOfTheKingdom.jpg",
+                            MobyGameId = 203119,
+                            Slug = "tears-of-the-kingdom",
+                            Title = "The Legend of Zelda: Tears of the Kingdom"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000016"),
+                            BoxArtPath = "/boxart/echoesOfWisdom.avif",
+                            MobyGameId = 231129,
+                            Slug = "echoes-of-wisdom",
+                            Title = "The Legend of Zelda: Echoes of Wisdom"
+                        });
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.ActivityEvent", b =>
                 {
                     b.HasOne("HyruleArchives.Models.AppUser", "AppUser")
@@ -591,6 +1389,28 @@ namespace backend.Migrations
                     b.Navigation("Game");
                 });
 
+            modelBuilder.Entity("HyruleArchives.Models.ZeldaCatalogAvailability", b =>
+                {
+                    b.HasOne("HyruleArchives.Models.ZeldaCatalogGame", "ZeldaCatalogGame")
+                        .WithMany("AvailabilityEntries")
+                        .HasForeignKey("ZeldaCatalogGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ZeldaCatalogGame");
+                });
+
+            modelBuilder.Entity("HyruleArchives.Models.ZeldaCatalogCollectionAppearance", b =>
+                {
+                    b.HasOne("HyruleArchives.Models.ZeldaCatalogGame", "ZeldaCatalogGame")
+                        .WithMany("CollectionAppearances")
+                        .HasForeignKey("ZeldaCatalogGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ZeldaCatalogGame");
+                });
+
             modelBuilder.Entity("HyruleArchives.Models.AppUser", b =>
                 {
                     b.Navigation("ActivityEvents");
@@ -623,6 +1443,13 @@ namespace backend.Migrations
             modelBuilder.Entity("HyruleArchives.Models.Region", b =>
                 {
                     b.Navigation("Releases");
+                });
+
+            modelBuilder.Entity("HyruleArchives.Models.ZeldaCatalogGame", b =>
+                {
+                    b.Navigation("AvailabilityEntries");
+
+                    b.Navigation("CollectionAppearances");
                 });
 #pragma warning restore 612, 618
         }

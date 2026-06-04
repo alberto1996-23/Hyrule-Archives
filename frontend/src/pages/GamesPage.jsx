@@ -1,38 +1,8 @@
 import { useEffect, useState } from 'react';
 import GameCard from '../components/GameCard';
-import { getMobyGamesZelda } from '../api/client';
+import { getZeldaCatalog } from '../api/client';
 
-function getEarliestReleaseTimestamp(game) {
-  // MobyGames gives release hints per platform, and some values are partial dates like
-  // 1986 or 1998-11. This helper normalizes those values so the list can be sorted from
-  // the oldest Zelda release to the newest one.
-  const timestamps = (game.platforms ?? [])
-    .map((platform) => normalizeReleaseDate(platform.firstReleaseDate))
-    .filter((value) => value !== null);
-
-  return timestamps.length > 0 ? Math.min(...timestamps) : Number.MAX_SAFE_INTEGER;
-}
-
-function normalizeReleaseDate(value) {
-  if (!value || typeof value !== 'string') {
-    return null;
-  }
-
-  const trimmed = value.trim();
-
-  if (/^\d{4}$/.test(trimmed)) {
-    return Date.parse(`${trimmed}-01-01T00:00:00Z`);
-  }
-
-  if (/^\d{4}-\d{2}$/.test(trimmed)) {
-    return Date.parse(`${trimmed}-01T00:00:00Z`);
-  }
-
-  const parsed = Date.parse(trimmed);
-  return Number.isNaN(parsed) ? null : parsed;
-}
-
-// The games page shows Zelda titles directly from MobyGames.
+// The games page now loads the curated Zelda catalog from the backend.
 export default function GamesPage() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,25 +11,12 @@ export default function GamesPage() {
   useEffect(() => {
     let isMounted = true;
 
-    async function loadGames() {
+    async function loadCatalog() {
       try {
-        const mobyGames = await getMobyGamesZelda();
-
-        // Sort the returned Zelda titles into chronological order so the page reads like
-        // a series timeline, starting with the earliest release and moving toward today.
-        const chronologicallySortedGames = [...mobyGames].sort((leftGame, rightGame) => {
-          const leftTimestamp = getEarliestReleaseTimestamp(leftGame);
-          const rightTimestamp = getEarliestReleaseTimestamp(rightGame);
-
-          if (leftTimestamp !== rightTimestamp) {
-            return leftTimestamp - rightTimestamp;
-          }
-
-          return leftGame.title.localeCompare(rightGame.title);
-        });
+        const catalog = await getZeldaCatalog();
 
         if (isMounted) {
-          setGames(chronologicallySortedGames);
+          setGames(catalog);
         }
       } catch (loadError) {
         if (isMounted) {
@@ -72,7 +29,7 @@ export default function GamesPage() {
       }
     }
 
-    loadGames();
+    loadCatalog();
 
     return () => {
       isMounted = false;
@@ -81,18 +38,18 @@ export default function GamesPage() {
 
   return (
     <section>
-      <h2>All Legend of Zelda titles from MobyGames</h2>
-      <p>This list is ordered by earliest release date, from the original 1986 game through newer entries.</p>
-      {loading ? <p>Loading Zelda titles...</p> : null}
+      <h2>Official Legend of Zelda games</h2>
+      <p>This page now loads the curated Zelda release catalog from the backend.</p>
+      {loading ? <p>Loading Zelda catalog...</p> : null}
       {error ? <p role="alert">{error}</p> : null}
-      {!loading && games.length === 0 ? <p>No Zelda titles were returned by MobyGames.</p> : null}
-      {!loading && games.length > 0 ? (
+      {!loading && !error && games.length > 0 ? (
         <div>
           {games.map((game) => (
-            <GameCard key={game.mobyGameId} game={game} />
+            <GameCard key={game.slug} game={game} />
           ))}
         </div>
       ) : null}
+      {!loading && !error && games.length === 0 ? <p>No Zelda games are currently configured.</p> : null}
     </section>
   );
 }
