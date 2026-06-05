@@ -747,6 +747,66 @@ namespace backend.Migrations
                         },
                         new
                         {
+                            Id = new Guid("60000000-0000-0000-0000-000000000053"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbcLogo.png",
+                            Kind = 1,
+                            Name = "Game Boy Color",
+                            Note = "Original 2001 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000017")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000054"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Nintendo 3DS Virtual Console",
+                            Note = "3DS Virtual Console release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000017")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000055"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            Note = "Available in the Game Boy app",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000017")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000056"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/gbcLogo.png",
+                            Kind = 1,
+                            Name = "Game Boy Color",
+                            Note = "Original 2001 release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000018")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000057"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/3dsVirtualConsole.png",
+                            Kind = 3,
+                            Name = "Nintendo 3DS Virtual Console",
+                            Note = "3DS Virtual Console release",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000018")
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000058"),
+                            DisplayOrder = 1,
+                            ImagePath = "/platformLogos/nintendoSwitchOnlineLogo.png",
+                            Kind = 4,
+                            Name = "Nintendo Switch Online",
+                            Note = "Available in the Game Boy app",
+                            ZeldaCatalogGameId = new Guid("50000000-0000-0000-0000-000000000018")
+                        },
+                        new
+                        {
                             Id = new Guid("60000000-0000-0000-0000-000000000024"),
                             DisplayOrder = 1,
                             ImagePath = "/platformLogos/n64Logo.png",
@@ -1188,6 +1248,22 @@ namespace backend.Migrations
                             MobyGameId = 4267,
                             Slug = "links-awakening",
                             Title = "The Legend of Zelda: Link's Awakening"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000017"),
+                            BoxArtPath = "/boxart/oracleOfSeasons.webp",
+                            MobyGameId = 4269,
+                            Slug = "oracle-of-seasons",
+                            Title = "The Legend of Zelda: Oracle of Seasons"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000018"),
+                            BoxArtPath = "/boxart/oracleOfAges.webp",
+                            MobyGameId = 4270,
+                            Slug = "oracle-of-ages",
+                            Title = "The Legend of Zelda: Oracle of Ages"
                         },
                         new
                         {

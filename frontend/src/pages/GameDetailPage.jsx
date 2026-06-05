@@ -22,15 +22,13 @@ function ReleaseGroup({ title, items }) {
   return (
     <section>
       <h3>{title}</h3>
-      <ul>
+      <div>
         {items.map((item) => (
-          <li key={`${title}-${item.name}`}>
-            <p>{item.name}</p>
-            <img src={item.src} alt={`${item.name} logo`} />
-            {item.note ? <p>{item.note}</p> : null}
-          </li>
+          <span key={`${title}-${item.name}`}>
+            <img src={item.imagePath} alt={`${item.name} logo`} />
+          </span>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }
@@ -43,16 +41,13 @@ function CollectorSection({ items }) {
   return (
     <section>
       <h3>Collector's Edition appearances</h3>
-      <ul>
+      <div>
         {items.map((item) => (
-          <li key={item.title}>
-            <p>{item.title}</p>
+          <span key={item.title}>
             <img src={item.boxArtPath} alt={`${item.title} box art`} />
-            <img src={item.platform.src} alt={`${item.platform.name} logo`} />
-            {item.platform.note ? <p>{item.platform.note}</p> : null}
-          </li>
+          </span>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }
@@ -250,9 +245,9 @@ export default function GameDetailPage() {
 
           <section>
             <h3>Primary console</h3>
-            <p>{selectedGame.primaryConsole.name}</p>
-            <img src={selectedGame.primaryConsole.src} alt={`${selectedGame.primaryConsole.name} logo`} />
-            {selectedGame.primaryConsole.note ? <p>{selectedGame.primaryConsole.note}</p> : null}
+            <div>
+              <img src={selectedGame.primaryConsole.imagePath} alt={`${selectedGame.primaryConsole.name} logo`} />
+            </div>
           </section>
 
           <ReleaseGroup title="Secondary consoles" items={selectedGame.secondaryConsoles} />
