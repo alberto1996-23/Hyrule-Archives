@@ -1,5 +1,7 @@
 namespace HyruleArchives.DTOs;
 
+// I use this DTO file to define the safe activity payload that the frontend can render.
+
 // This DTO is the public-safe version of an ActivityEvent.
 //
 // It is used for:

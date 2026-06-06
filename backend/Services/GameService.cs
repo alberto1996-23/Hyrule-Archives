@@ -4,6 +4,7 @@ using HyruleArchives.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Services;
+// I use this service to centralize local game import, lookup, and upsert logic.
 
 // This service owns write operations for local Game records.
 // Keeping import logic here keeps the endpoint focused on HTTP concerns.

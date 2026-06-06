@@ -6,6 +6,7 @@ using HyruleArchives.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to handle personal collection and favorite management routes.
 
 public static class CollectionEndpoints
 {

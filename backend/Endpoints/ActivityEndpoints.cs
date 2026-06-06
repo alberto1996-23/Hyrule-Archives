@@ -2,6 +2,7 @@ using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to expose the recent-activity API routes in one focused place.
 
 public static class ActivityEndpoints
 {

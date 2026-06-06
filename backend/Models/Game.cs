@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model as the main community-enabled game record inside the local database.
+
 public class Game
 {
     public Guid Id { get; set; }

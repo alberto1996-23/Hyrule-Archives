@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Services;
+// I use this service to create activity rows and broadcast them to connected clients.
 
 public class ActivityEventService
 {

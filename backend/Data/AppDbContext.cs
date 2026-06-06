@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Data;
 
+// I use this DbContext as the central map for tables, relationships, indexes, and seed data.
+
 // The DbContext is EF Core's main entry point into the database.
 // It defines which tables exist and how the entities relate to one another.
 public class AppDbContext : DbContext
@@ -311,24 +313,25 @@ public class AppDbContext : DbContext
 
         var games = new[]
         {
-            new ZeldaCatalogGame { Id = CatalogGameId(1), Slug = "the-legend-of-zelda", MobyGameId = 3393, Title = "The Legend of Zelda", BoxArtPath = "/boxart/zeldanes.jpeg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(2), Slug = "zelda-ii-the-adventure-of-link", MobyGameId = 7296, Title = "Zelda II: The Adventure of Link", BoxArtPath = "/boxart/zelda2.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(3), Slug = "a-link-to-the-past", MobyGameId = 6608, Title = "The Legend of Zelda: A Link to the Past", BoxArtPath = "/boxart/aLinktoThePast.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(4), Slug = "links-awakening", MobyGameId = 4267, Title = "The Legend of Zelda: Link's Awakening", BoxArtPath = "/boxart/linksAwakening.png" },
-            new ZeldaCatalogGame { Id = CatalogGameId(17), Slug = "oracle-of-seasons", MobyGameId = 4269, Title = "The Legend of Zelda: Oracle of Seasons", BoxArtPath = "/boxart/oracleOfSeasons.webp" },
-            new ZeldaCatalogGame { Id = CatalogGameId(18), Slug = "oracle-of-ages", MobyGameId = 4270, Title = "The Legend of Zelda: Oracle of Ages", BoxArtPath = "/boxart/oracleOfAges.webp" },
-            new ZeldaCatalogGame { Id = CatalogGameId(5), Slug = "ocarina-of-time", MobyGameId = 3549, Title = "The Legend of Zelda: Ocarina of Time", BoxArtPath = "/boxart/ocarinaOfTime.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(6), Slug = "majoras-mask", MobyGameId = 3550, Title = "The Legend of Zelda: Majora's Mask", BoxArtPath = "/boxart/majorasMask.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(7), Slug = "the-wind-waker", MobyGameId = 8725, Title = "The Legend of Zelda: The Wind Waker", BoxArtPath = "/boxart/windWaker.webp" },
-            new ZeldaCatalogGame { Id = CatalogGameId(8), Slug = "twilight-princess", MobyGameId = 25103, Title = "The Legend of Zelda: Twilight Princess", BoxArtPath = "/boxart/twilightPrincess.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(9), Slug = "phantom-hourglass", MobyGameId = 30522, Title = "The Legend of Zelda: Phantom Hourglass", BoxArtPath = "/boxart/phantomHourglass.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(10), Slug = "spirit-tracks", MobyGameId = 44059, Title = "The Legend of Zelda: Spirit Tracks", BoxArtPath = "/boxart/spiritTracks.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(11), Slug = "skyward-sword", MobyGameId = 53708, Title = "The Legend of Zelda: Skyward Sword", BoxArtPath = "/boxart/skywardSword.webp" },
-            new ZeldaCatalogGame { Id = CatalogGameId(12), Slug = "a-link-between-worlds", MobyGameId = 62785, Title = "The Legend of Zelda: A Link Between Worlds", BoxArtPath = "/boxart/aLinkbetweenWorlds.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(13), Slug = "tri-force-heroes", MobyGameId = 75907, Title = "The Legend of Zelda: Tri Force Heroes", BoxArtPath = "/boxart/triforceHeroes.avif" },
-            new ZeldaCatalogGame { Id = CatalogGameId(14), Slug = "breath-of-the-wild", MobyGameId = 84595, Title = "The Legend of Zelda: Breath of the Wild", BoxArtPath = "/boxart/breathOfTheWild.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(15), Slug = "tears-of-the-kingdom", MobyGameId = 203119, Title = "The Legend of Zelda: Tears of the Kingdom", BoxArtPath = "/boxart/tearsOfTheKingdom.jpg" },
-            new ZeldaCatalogGame { Id = CatalogGameId(16), Slug = "echoes-of-wisdom", MobyGameId = 231129, Title = "The Legend of Zelda: Echoes of Wisdom", BoxArtPath = "/boxart/echoesOfWisdom.avif" },
+            // I keep the original release date with each curated game so the catalog can be returned chronologically.
+            new ZeldaCatalogGame { Id = CatalogGameId(1), Slug = "the-legend-of-zelda", MobyGameId = 3393, Title = "The Legend of Zelda", BoxArtPath = "/boxart/zeldanes.jpeg", OriginalReleaseDate = new DateTime(1986, 2, 21) },
+            new ZeldaCatalogGame { Id = CatalogGameId(2), Slug = "zelda-ii-the-adventure-of-link", MobyGameId = 7296, Title = "Zelda II: The Adventure of Link", BoxArtPath = "/boxart/zelda2.jpg", OriginalReleaseDate = new DateTime(1987, 1, 14) },
+            new ZeldaCatalogGame { Id = CatalogGameId(3), Slug = "a-link-to-the-past", MobyGameId = 6608, Title = "The Legend of Zelda: A Link to the Past", BoxArtPath = "/boxart/aLinktoThePast.jpg", OriginalReleaseDate = new DateTime(1991, 11, 21) },
+            new ZeldaCatalogGame { Id = CatalogGameId(4), Slug = "links-awakening", MobyGameId = 4267, Title = "The Legend of Zelda: Link's Awakening", BoxArtPath = "/boxart/linksAwakening.png", OriginalReleaseDate = new DateTime(1993, 6, 6) },
+            new ZeldaCatalogGame { Id = CatalogGameId(5), Slug = "ocarina-of-time", MobyGameId = 3549, Title = "The Legend of Zelda: Ocarina of Time", BoxArtPath = "/boxart/ocarinaOfTime.jpg", OriginalReleaseDate = new DateTime(1998, 11, 21) },
+            new ZeldaCatalogGame { Id = CatalogGameId(6), Slug = "majoras-mask", MobyGameId = 3550, Title = "The Legend of Zelda: Majora's Mask", BoxArtPath = "/boxart/majorasMask.jpg", OriginalReleaseDate = new DateTime(2000, 4, 27) },
+            new ZeldaCatalogGame { Id = CatalogGameId(17), Slug = "oracle-of-seasons", MobyGameId = 4269, Title = "The Legend of Zelda: Oracle of Seasons", BoxArtPath = "/boxart/oracleOfSeasons.webp", OriginalReleaseDate = new DateTime(2001, 2, 27) },
+            new ZeldaCatalogGame { Id = CatalogGameId(18), Slug = "oracle-of-ages", MobyGameId = 4270, Title = "The Legend of Zelda: Oracle of Ages", BoxArtPath = "/boxart/oracleOfAges.webp", OriginalReleaseDate = new DateTime(2001, 2, 27) },
+            new ZeldaCatalogGame { Id = CatalogGameId(7), Slug = "the-wind-waker", MobyGameId = 8725, Title = "The Legend of Zelda: The Wind Waker", BoxArtPath = "/boxart/windWaker.webp", OriginalReleaseDate = new DateTime(2002, 12, 13) },
+            new ZeldaCatalogGame { Id = CatalogGameId(8), Slug = "twilight-princess", MobyGameId = 25103, Title = "The Legend of Zelda: Twilight Princess", BoxArtPath = "/boxart/twilightPrincess.jpg", OriginalReleaseDate = new DateTime(2006, 11, 19) },
+            new ZeldaCatalogGame { Id = CatalogGameId(9), Slug = "phantom-hourglass", MobyGameId = 30522, Title = "The Legend of Zelda: Phantom Hourglass", BoxArtPath = "/boxart/phantomHourglass.jpg", OriginalReleaseDate = new DateTime(2007, 6, 23) },
+            new ZeldaCatalogGame { Id = CatalogGameId(10), Slug = "spirit-tracks", MobyGameId = 44059, Title = "The Legend of Zelda: Spirit Tracks", BoxArtPath = "/boxart/spiritTracks.jpg", OriginalReleaseDate = new DateTime(2009, 12, 7) },
+            new ZeldaCatalogGame { Id = CatalogGameId(11), Slug = "skyward-sword", MobyGameId = 53708, Title = "The Legend of Zelda: Skyward Sword", BoxArtPath = "/boxart/skywardSword.webp", OriginalReleaseDate = new DateTime(2011, 11, 18) },
+            new ZeldaCatalogGame { Id = CatalogGameId(12), Slug = "a-link-between-worlds", MobyGameId = 62785, Title = "The Legend of Zelda: A Link Between Worlds", BoxArtPath = "/boxart/aLinkbetweenWorlds.jpg", OriginalReleaseDate = new DateTime(2013, 11, 22) },
+            new ZeldaCatalogGame { Id = CatalogGameId(13), Slug = "tri-force-heroes", MobyGameId = 75907, Title = "The Legend of Zelda: Tri Force Heroes", BoxArtPath = "/boxart/triforceHeroes.avif", OriginalReleaseDate = new DateTime(2015, 10, 22) },
+            new ZeldaCatalogGame { Id = CatalogGameId(14), Slug = "breath-of-the-wild", MobyGameId = 84595, Title = "The Legend of Zelda: Breath of the Wild", BoxArtPath = "/boxart/breathOfTheWild.jpg", OriginalReleaseDate = new DateTime(2017, 3, 3) },
+            new ZeldaCatalogGame { Id = CatalogGameId(15), Slug = "tears-of-the-kingdom", MobyGameId = 203119, Title = "The Legend of Zelda: Tears of the Kingdom", BoxArtPath = "/boxart/tearsOfTheKingdom.jpg", OriginalReleaseDate = new DateTime(2023, 5, 12) },
+            new ZeldaCatalogGame { Id = CatalogGameId(16), Slug = "echoes-of-wisdom", MobyGameId = 231129, Title = "The Legend of Zelda: Echoes of Wisdom", BoxArtPath = "/boxart/echoesOfWisdom.avif", OriginalReleaseDate = new DateTime(2024, 9, 26) },
         };
 
         modelBuilder.Entity<ZeldaCatalogGame>().HasData(games);

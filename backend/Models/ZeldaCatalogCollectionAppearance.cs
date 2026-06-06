@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to list collector compilation appearances for a curated Zelda title.
+
 public class ZeldaCatalogCollectionAppearance
 {
     public Guid Id { get; set; }

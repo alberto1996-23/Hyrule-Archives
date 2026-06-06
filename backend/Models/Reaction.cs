@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to keep one like or dislike choice per user per game.
+
 public class Reaction
 {
     public Guid Id { get; set; }

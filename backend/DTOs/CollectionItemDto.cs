@@ -1,5 +1,7 @@
 namespace HyruleArchives.DTOs;
 
+// I use this DTO to send one saved collection row back to the frontend.
+
 // This DTO is what the frontend uses to render a user's saved collection entries.
 public record CollectionItemDto(
     Guid Id,

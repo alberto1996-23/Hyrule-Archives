@@ -1,6 +1,7 @@
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module for development-only seed and demo data actions.
 
 public static class DevSeedEndpoints
 {

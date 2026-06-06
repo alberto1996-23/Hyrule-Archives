@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to record one release event for a game on a platform in a region.
+
 public class GameRelease
 {
     public Guid Id { get; set; }

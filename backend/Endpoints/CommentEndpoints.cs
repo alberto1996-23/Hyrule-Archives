@@ -6,6 +6,7 @@ using HyruleArchives.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to keep comment CRUD routes together and easier to follow.
 
 public static class CommentEndpoints
 {

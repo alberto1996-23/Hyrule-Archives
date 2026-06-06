@@ -3,6 +3,7 @@ using HyruleArchives.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to return platform metadata to the frontend in a small read-only shape.
 
 // Platform endpoints expose the consoles/platforms that Zelda games can appear on.
 public static class PlatformEndpoints

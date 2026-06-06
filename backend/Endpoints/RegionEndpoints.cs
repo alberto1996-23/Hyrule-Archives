@@ -3,6 +3,7 @@ using HyruleArchives.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to expose release-region reference data for client screens.
 
 // Region endpoints expose where releases happened, such as Japan or Global.
 public static class RegionEndpoints

@@ -2,6 +2,7 @@ using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to proxy curated MobyGames search and import calls through the backend.
 
 public static class MobyGamesEndpoints
 {

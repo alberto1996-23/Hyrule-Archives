@@ -4,6 +4,7 @@ using HyruleArchives.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to expose the core game lookup routes and import bridge helpers.
 
 public static class GameEndpoints
 {

@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to store one user's written comment on one game.
+
 public class Comment
 {
     public Guid Id { get; set; }

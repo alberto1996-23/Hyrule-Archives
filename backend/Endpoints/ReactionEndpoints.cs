@@ -6,6 +6,7 @@ using HyruleArchives.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to handle likes, dislikes, and reaction summary routes.
 
 public static class ReactionEndpoints
 {

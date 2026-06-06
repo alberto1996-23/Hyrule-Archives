@@ -1,5 +1,7 @@
 namespace HyruleArchives.DTOs;
 
+// I use this DTO file to bundle the summary lists that power the community dashboard sections.
+
 // This DTO groups several leaderboard lists into one response for a dashboard-like screen.
 public record CommunityHighlightsDto(
     List<CommunityGameMetricDto> TrendingGames,

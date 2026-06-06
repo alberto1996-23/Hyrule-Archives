@@ -3,6 +3,7 @@ using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to group the current-user routes behind one consistent surface.
 
 public static class UserEndpoints
 {

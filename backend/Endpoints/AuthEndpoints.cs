@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to group the login, logout, and auth callback routes.
 
 public static class AuthEndpoints
 {

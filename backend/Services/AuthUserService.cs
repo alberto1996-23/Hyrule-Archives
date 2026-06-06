@@ -4,6 +4,7 @@ using HyruleArchives.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Services;
+// I use this service to turn external auth claims into a stable local user record.
 
 // This service translates an authenticated ClaimsPrincipal into an AppUser row.
 // If the OAuth user logs in for the first time, the service creates their local profile.

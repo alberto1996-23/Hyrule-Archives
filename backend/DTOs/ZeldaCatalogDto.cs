@@ -1,5 +1,7 @@
 namespace HyruleArchives.DTOs;
 
+// I use these DTOs to send the curated Zelda catalog to the frontend without exposing EF entities.
+
 public record ZeldaCatalogAvailabilityDto(
     string Name,
     string ImagePath,

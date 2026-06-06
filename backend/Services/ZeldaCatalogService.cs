@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Services;
 
+// I use this service to keep the curated Zelda catalog query logic in one place
+// so my endpoint layer stays focused on HTTP concerns instead of EF details.
+
 public class ZeldaCatalogService
 {
     private readonly AppDbContext _dbContext;
@@ -17,7 +20,9 @@ public class ZeldaCatalogService
     public async Task<List<ZeldaCatalogGameDto>> GetAllGamesAsync()
     {
         var games = await LoadCatalogGamesQuery()
-            .OrderBy(game => game.Title)
+            // I sort by the original launch date so the Games page reads like a timeline.
+            .OrderBy(game => game.OriginalReleaseDate)
+            .ThenBy(game => game.Title)
             .ToListAsync();
 
         return games.Select(MapGame).ToList();

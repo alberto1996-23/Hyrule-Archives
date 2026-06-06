@@ -3,6 +3,7 @@ using HyruleArchives.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Services;
+// I use this service to create or refresh demo data that makes the app easier to test locally.
 
 public class SeedService
 {

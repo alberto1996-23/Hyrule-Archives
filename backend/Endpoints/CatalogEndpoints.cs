@@ -2,6 +2,7 @@ using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to serve the curated Zelda catalog over simple read-only routes.
 
 public static class CatalogEndpoints
 {

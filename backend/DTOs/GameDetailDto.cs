@@ -1,5 +1,7 @@
 namespace HyruleArchives.DTOs;
 
+// I use this DTO when the frontend needs the fuller nested game view instead of a simple list row.
+
 // This DTO powers a detail page where the frontend needs nested release metadata.
 public record GameDetailDto(
     Guid Id,

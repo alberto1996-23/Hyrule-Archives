@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to store one availability badge or release bucket under a curated Zelda game.
+
 public class ZeldaCatalogAvailability
 {
     public Guid Id { get; set; }

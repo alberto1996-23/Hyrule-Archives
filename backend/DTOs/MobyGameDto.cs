@@ -1,5 +1,7 @@
 namespace HyruleArchives.DTOs;
 
+// I use this DTO to reshape third-party MobyGames data into the smaller API contract my app expects.
+
 // This DTO is the simplified version of MobyGames data
 // that we want to send to the React frontend.
 //

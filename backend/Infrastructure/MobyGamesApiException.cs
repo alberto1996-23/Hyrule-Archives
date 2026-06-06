@@ -1,7 +1,6 @@
 namespace HyruleArchives.Infrastructure;
 
-// This exception keeps the upstream MobyGames status code so endpoint handlers
-// can return a more accurate response than a generic internal server error.
+// I use this exception type when I need to pass the upstream MobyGames status code back up the stack.
 public sealed class MobyGamesApiException : Exception
 {
     public int StatusCode { get; }

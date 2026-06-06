@@ -1,4 +1,5 @@
 namespace HyruleArchives.Infrastructure;
+// I use this helper file to keep problem-details error responses consistent across endpoint modules.
 
 // These helpers keep API error responses consistent across all endpoint modules.
 // Every non-successful result now returns Problem Details instead of ad-hoc JSON.

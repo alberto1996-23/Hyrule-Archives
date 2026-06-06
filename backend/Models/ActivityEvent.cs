@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to log a user action that can later show up in recent activity feeds.
+
 public class ActivityEvent
 {
     public Guid Id { get; set; }

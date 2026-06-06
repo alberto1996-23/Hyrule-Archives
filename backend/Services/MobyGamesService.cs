@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Text.RegularExpressions;
 
 namespace HyruleArchives.Services;
+// I use this service to call MobyGames, normalize the response, and cache it so the UI stays stable.
 
 public class MobyGamesService
 {

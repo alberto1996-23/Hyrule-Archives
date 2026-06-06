@@ -3,6 +3,7 @@ using HyruleArchives.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace HyruleArchives.Endpoints;
+// I use this endpoint module to build the community dashboard response from aggregate queries.
 
 // Community endpoints compute aggregate data that makes the site feel alive.
 public static class CommunityEndpoints

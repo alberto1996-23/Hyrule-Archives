@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using HyruleArchives.Hubs;
 using Npgsql;
 
+// I use Program.cs as the app's composition root where services, middleware, auth, and endpoints are all wired together.
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Resolve the database provider up front so the same startup code can run

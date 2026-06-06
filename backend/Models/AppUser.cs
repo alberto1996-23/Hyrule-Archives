@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to represent one signed-in person and their saved app relationships.
+
 public class AppUser
 {
     public Guid Id { get; set; }

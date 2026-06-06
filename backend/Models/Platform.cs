@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to define one playable platform so release rows can point to it cleanly.
+
 // Platforms describe consoles or systems such as NES, Switch, or GameCube.
 public class Platform
 {

@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this model to normalize release regions instead of repeating region text on every row.
+
 // Regions describe where a release happened, such as Japan, North America, or Global.
 public class Region
 {

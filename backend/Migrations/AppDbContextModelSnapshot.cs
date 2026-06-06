@@ -1196,6 +1196,9 @@ namespace backend.Migrations
                     b.Property<int>("MobyGameId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("OriginalReleaseDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -1222,6 +1225,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000001"),
                             BoxArtPath = "/boxart/zeldanes.jpeg",
                             MobyGameId = 3393,
+                            OriginalReleaseDate = new DateTime(1986, 2, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "the-legend-of-zelda",
                             Title = "The Legend of Zelda"
                         },
@@ -1230,6 +1234,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000002"),
                             BoxArtPath = "/boxart/zelda2.jpg",
                             MobyGameId = 7296,
+                            OriginalReleaseDate = new DateTime(1987, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "zelda-ii-the-adventure-of-link",
                             Title = "Zelda II: The Adventure of Link"
                         },
@@ -1238,6 +1243,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000003"),
                             BoxArtPath = "/boxart/aLinktoThePast.jpg",
                             MobyGameId = 6608,
+                            OriginalReleaseDate = new DateTime(1991, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "a-link-to-the-past",
                             Title = "The Legend of Zelda: A Link to the Past"
                         },
@@ -1246,30 +1252,16 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000004"),
                             BoxArtPath = "/boxart/linksAwakening.png",
                             MobyGameId = 4267,
+                            OriginalReleaseDate = new DateTime(1993, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "links-awakening",
                             Title = "The Legend of Zelda: Link's Awakening"
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000017"),
-                            BoxArtPath = "/boxart/oracleOfSeasons.webp",
-                            MobyGameId = 4269,
-                            Slug = "oracle-of-seasons",
-                            Title = "The Legend of Zelda: Oracle of Seasons"
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000018"),
-                            BoxArtPath = "/boxart/oracleOfAges.webp",
-                            MobyGameId = 4270,
-                            Slug = "oracle-of-ages",
-                            Title = "The Legend of Zelda: Oracle of Ages"
                         },
                         new
                         {
                             Id = new Guid("50000000-0000-0000-0000-000000000005"),
                             BoxArtPath = "/boxart/ocarinaOfTime.jpg",
                             MobyGameId = 3549,
+                            OriginalReleaseDate = new DateTime(1998, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "ocarina-of-time",
                             Title = "The Legend of Zelda: Ocarina of Time"
                         },
@@ -1278,14 +1270,34 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000006"),
                             BoxArtPath = "/boxart/majorasMask.jpg",
                             MobyGameId = 3550,
+                            OriginalReleaseDate = new DateTime(2000, 4, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "majoras-mask",
                             Title = "The Legend of Zelda: Majora's Mask"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000017"),
+                            BoxArtPath = "/boxart/oracleOfSeasons.webp",
+                            MobyGameId = 4269,
+                            OriginalReleaseDate = new DateTime(2001, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Slug = "oracle-of-seasons",
+                            Title = "The Legend of Zelda: Oracle of Seasons"
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000018"),
+                            BoxArtPath = "/boxart/oracleOfAges.webp",
+                            MobyGameId = 4270,
+                            OriginalReleaseDate = new DateTime(2001, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Slug = "oracle-of-ages",
+                            Title = "The Legend of Zelda: Oracle of Ages"
                         },
                         new
                         {
                             Id = new Guid("50000000-0000-0000-0000-000000000007"),
                             BoxArtPath = "/boxart/windWaker.webp",
                             MobyGameId = 8725,
+                            OriginalReleaseDate = new DateTime(2002, 12, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "the-wind-waker",
                             Title = "The Legend of Zelda: The Wind Waker"
                         },
@@ -1294,6 +1306,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000008"),
                             BoxArtPath = "/boxart/twilightPrincess.jpg",
                             MobyGameId = 25103,
+                            OriginalReleaseDate = new DateTime(2006, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "twilight-princess",
                             Title = "The Legend of Zelda: Twilight Princess"
                         },
@@ -1302,6 +1315,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000009"),
                             BoxArtPath = "/boxart/phantomHourglass.jpg",
                             MobyGameId = 30522,
+                            OriginalReleaseDate = new DateTime(2007, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "phantom-hourglass",
                             Title = "The Legend of Zelda: Phantom Hourglass"
                         },
@@ -1310,6 +1324,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000010"),
                             BoxArtPath = "/boxart/spiritTracks.jpg",
                             MobyGameId = 44059,
+                            OriginalReleaseDate = new DateTime(2009, 12, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "spirit-tracks",
                             Title = "The Legend of Zelda: Spirit Tracks"
                         },
@@ -1318,6 +1333,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000011"),
                             BoxArtPath = "/boxart/skywardSword.webp",
                             MobyGameId = 53708,
+                            OriginalReleaseDate = new DateTime(2011, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "skyward-sword",
                             Title = "The Legend of Zelda: Skyward Sword"
                         },
@@ -1326,6 +1342,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000012"),
                             BoxArtPath = "/boxart/aLinkbetweenWorlds.jpg",
                             MobyGameId = 62785,
+                            OriginalReleaseDate = new DateTime(2013, 11, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "a-link-between-worlds",
                             Title = "The Legend of Zelda: A Link Between Worlds"
                         },
@@ -1334,6 +1351,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000013"),
                             BoxArtPath = "/boxart/triforceHeroes.avif",
                             MobyGameId = 75907,
+                            OriginalReleaseDate = new DateTime(2015, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "tri-force-heroes",
                             Title = "The Legend of Zelda: Tri Force Heroes"
                         },
@@ -1342,6 +1360,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000014"),
                             BoxArtPath = "/boxart/breathOfTheWild.jpg",
                             MobyGameId = 84595,
+                            OriginalReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "breath-of-the-wild",
                             Title = "The Legend of Zelda: Breath of the Wild"
                         },
@@ -1350,6 +1369,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000015"),
                             BoxArtPath = "/boxart/tearsOfTheKingdom.jpg",
                             MobyGameId = 203119,
+                            OriginalReleaseDate = new DateTime(2023, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "tears-of-the-kingdom",
                             Title = "The Legend of Zelda: Tears of the Kingdom"
                         },
@@ -1358,6 +1378,7 @@ namespace backend.Migrations
                             Id = new Guid("50000000-0000-0000-0000-000000000016"),
                             BoxArtPath = "/boxart/echoesOfWisdom.avif",
                             MobyGameId = 231129,
+                            OriginalReleaseDate = new DateTime(2024, 9, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Slug = "echoes-of-wisdom",
                             Title = "The Legend of Zelda: Echoes of Wisdom"
                         });

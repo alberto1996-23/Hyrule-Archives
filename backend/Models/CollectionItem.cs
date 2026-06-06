@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HyruleArchives.Models;
 
+// I use this join model to connect one user with one game in the personal collection feature.
+
 public class CollectionItem
 {
     public Guid Id { get; set; }
