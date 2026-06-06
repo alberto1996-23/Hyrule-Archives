@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
-import CommentsSection from '../components/CommentsSection';
 import {
   createComment,
   getGameComments,
   getLocalGame,
   getLocalGameByMobyGameId,
   getLocalGameBySlug,
+  getReactionSummary,
   getZeldaCatalogGameByMobyGameId,
   getZeldaCatalogGameBySlug,
   importMobyGame,
   setReaction,
-  getReactionSummary,
-} from '../api/client';
+} from '../../api/client';
+import CommentsSection from './components/CommentsSection';
+import './GameDetailPage.css';
 
 function ReleaseGroup({ title, items }) {
   if (!items || items.length === 0) {
@@ -20,11 +21,11 @@ function ReleaseGroup({ title, items }) {
   }
 
   return (
-    <section>
+    <section className="game-detail__section">
       <h3>{title}</h3>
-      <div>
+      <div className="game-detail__logo-row">
         {items.map((item) => (
-          <span key={`${title}-${item.name}`}>
+          <span key={`${title}-${item.name}`} className="game-detail__logo-wrap">
             <img src={item.imagePath} alt={`${item.name} logo`} />
           </span>
         ))}
@@ -39,11 +40,11 @@ function CollectorSection({ items }) {
   }
 
   return (
-    <section>
+    <section className="game-detail__section">
       <h3>Collector's Edition appearances</h3>
-      <div>
+      <div className="game-detail__collector-row">
         {items.map((item) => (
-          <span key={item.title}>
+          <span key={item.title} className="game-detail__collector-wrap">
             <img src={item.boxArtPath} alt={`${item.title} box art`} />
           </span>
         ))}
@@ -53,8 +54,7 @@ function CollectorSection({ items }) {
 }
 
 // The detail page still imports the selected MobyGames entry into the local database,
-// but the UI keeps the requested title, MobyGames summary, platform availability,
-// like/dislike totals, and comments with a comment form.
+// but the UI keeps the requested title, summary, platform availability, reactions, and comments.
 export default function GameDetailPage() {
   const { gameSlug, mobyGameId } = useParams();
   const { currentUser, sendToLogin } = useOutletContext();
@@ -118,8 +118,6 @@ export default function GameDetailPage() {
             const imported = await importMobyGame(catalogGame.mobyGameId);
             localGameId = imported.localGameId;
           } catch (importError) {
-            // Best-effort fallback for older locally-seeded rows whose slug already matches
-            // the curated route, even if they were never linked to MobyGames yet.
             try {
               const seededLocalGame = await getLocalGameBySlug(catalogGame.slug);
               localGameId = seededLocalGame.id;
@@ -236,24 +234,31 @@ export default function GameDetailPage() {
   }
 
   return (
-    <div>
+    <div className="game-detail">
       {selectedGame ? (
-        <section>
-          <h2>{localGame?.title ?? selectedGame.title}</h2>
-          <img src={selectedGame.boxArtPath} alt={`${selectedGame.title} box art`} />
-          {!loading && localGame?.summary ? <p>{localGame.summary}</p> : null}
+        <section className="game-detail__hero">
+          <div className="game-detail__hero-media">
+            <img src={selectedGame.boxArtPath} alt={`${selectedGame.title} box art`} />
+          </div>
+          <div className="game-detail__hero-copy">
+            <p className="game-detail__eyebrow">Game detail</p>
+            <h2>{localGame?.title ?? selectedGame.title}</h2>
+            {!loading && localGame?.summary ? <p>{localGame.summary}</p> : null}
 
-          <section>
-            <h3>Primary console</h3>
-            <div>
-              <img src={selectedGame.primaryConsole.imagePath} alt={`${selectedGame.primaryConsole.name} logo`} />
-            </div>
-          </section>
+            <section className="game-detail__section">
+              <h3>Primary console</h3>
+              <div className="game-detail__logo-row">
+                <span className="game-detail__logo-wrap">
+                  <img src={selectedGame.primaryConsole.imagePath} alt={`${selectedGame.primaryConsole.name} logo`} />
+                </span>
+              </div>
+            </section>
 
-          <ReleaseGroup title="Secondary consoles" items={selectedGame.secondaryConsoles} />
-          <ReleaseGroup title="Downloaded ports" items={selectedGame.downloadedPorts} />
-          <ReleaseGroup title="Nintendo Switch Online" items={selectedGame.subscriptionServices} />
-          <CollectorSection items={selectedGame.collectionAppearances} />
+            <ReleaseGroup title="Secondary consoles" items={selectedGame.secondaryConsoles} />
+            <ReleaseGroup title="Downloaded ports" items={selectedGame.downloadedPorts} />
+            <ReleaseGroup title="Nintendo Switch Online" items={selectedGame.subscriptionServices} />
+            <CollectorSection items={selectedGame.collectionAppearances} />
+          </div>
         </section>
       ) : null}
 
@@ -261,13 +266,12 @@ export default function GameDetailPage() {
       {pageError ? <p role="alert">{pageError}</p> : null}
 
       {!loading && localGame ? (
-        <div>
-          <section>
+        <div className="game-detail__community-grid">
+          <section className="game-detail__section">
             <h2>Likes and dislikes of this game</h2>
             <p>Likes: {reactionSummary?.likes ?? 0}</p>
             <p>Dislikes: {reactionSummary?.dislikes ?? 0}</p>
-            <div>
-              {/* The page keeps only the direct like/dislike actions requested for testing. */}
+            <div className="game-detail__actions">
               <button type="button" onClick={() => handleReaction('Like')} disabled={reactionSubmitting}>
                 Like
               </button>

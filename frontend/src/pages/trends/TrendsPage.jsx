@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import TrendSection from '../components/TrendSection';
-import { getCommunityHighlights, getRecentActivity } from '../api/client';
+import { getCommunityHighlights, getRecentActivity } from '../../api/client';
+import TrendSection from './components/TrendSection';
+import './TrendsPage.css';
 
 // The trends page shows how user interactions change community leaderboards.
 export default function TrendsPage() {
@@ -42,20 +43,21 @@ export default function TrendsPage() {
   }, []);
 
   return (
-    <div>
-      <section>
-        <h2>Legend of Zelda Trends</h2>
+    <div className="trends-page">
+      <section className="trends-page__hero">
+        <p className="trends-page__eyebrow">Trends</p>
+        <h2>Legend of Zelda community trends</h2>
         <p>
-          These lists update based on favorites, comments, likes, and dislikes stored in the backend.
-          Games with no community activity stay off the leaderboards, and trending gives the most weight to
-          strong like support while dislikes push a game downward.
+          These lists update based on favorites, comments, likes, and dislikes stored in the backend. Games with no
+          community activity stay off the leaderboards, and trending gives the most weight to strong like support while
+          dislikes push a game downward.
         </p>
       </section>
 
       {loading ? <p>Loading community trends...</p> : null}
       {error ? <p role="alert">{error}</p> : null}
       {!loading && highlights ? (
-        <div>
+        <div className="trends-page__grid">
           <TrendSection title="Trending games" items={highlights.trendingGames} />
           <TrendSection title="Most favorited games" items={highlights.mostFavoritedGames} />
           <TrendSection title="Most commented games" items={highlights.mostCommentedGames} />
@@ -63,15 +65,15 @@ export default function TrendsPage() {
         </div>
       ) : null}
 
-      <section>
-        <h2>Recent public activity</h2>
+      <section className="trends-page__card">
+        <h3>Recent public activity</h3>
         {!loading && activity.length === 0 ? <p>No public activity yet.</p> : null}
         {!loading && activity.length > 0 ? (
-          <ul>
+          <ul className="trends-page__activity-list">
             {activity.map((item) => (
               <li key={item.id}>
                 <p>{item.message}</p>
-                <p>{new Date(item.createdAt).toLocaleString()}</p>
+                <time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleString()}</time>
               </li>
             ))}
           </ul>

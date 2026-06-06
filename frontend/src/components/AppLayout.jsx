@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { getCurrentUser, getLoginUrl, getApiBaseUrl, logout } from '../api/client';
+import { getCurrentUser, getLoginUrl, logout } from '../api/client';
+import './AppLayout.css';
 
 // The layout wraps every page with the shared logo, navigation, and login state controls.
 export default function AppLayout() {
@@ -73,60 +74,73 @@ export default function AppLayout() {
     }
   }
 
-  const homeTarget = currentUser ? '/' : '/login';
-
   return (
-    <div>
-      <header>
-        <h1>The Hyrule Archives</h1>
+    <div className="app-shell">
+      <header className="app-shell__header">
+        <div className="app-shell__header-inner">
+          <Link className="app-shell__brand" to="/">
+            <img src="/Zelda_the_hyrule_archives_logo.png" alt="The Hyrule Archives logo" />
+            <div className="app-shell__brand-copy">
+              <h1>The Hyrule Archives</h1>
+              <p>Track Zelda games, reactions, and community activity.</p>
+            </div>
+          </Link>
 
-        <nav aria-label="Primary navigation">
-          <ul>
-            <li>
-              <Link to={homeTarget}>My Legend of Zelda</Link>
-            </li>
-            <li>
-              <Link to="/games">Games</Link>
-            </li>
-            <li>
-              <Link to="/trends">Trends</Link>
-            </li>
-            {currentUser ? (
+          <nav aria-label="Primary navigation">
+            <ul className="app-shell__nav-list">
               <li>
-                <Link to="/dashboard">Dashboard</Link>
+                <Link className="app-shell__nav-link" to="/">
+                  {currentUser ? 'Home' : 'Homepage'}
+                </Link>
               </li>
-            ) : null}
-          </ul>
-        </nav>
+              <li>
+                <Link className="app-shell__nav-link" to="/games">
+                  Games
+                </Link>
+              </li>
+              <li>
+                <Link className="app-shell__nav-link" to="/trends">
+                  Trends
+                </Link>
+              </li>
+              {currentUser ? (
+                <li>
+                  <Link className="app-shell__nav-link" to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+          </nav>
 
-        <section aria-label="Authentication status">
-          <h2>Authentication</h2>
-          {authLoading ? <p>Checking login status...</p> : null}
-          {!authLoading && currentUser ? (
-            <div>
-              <p>
-                Logged in as <strong>{currentUser.displayName ?? currentUser.email ?? 'Unknown user'}</strong>
-              </p>
-              <button type="button" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          ) : null}
-          {!authLoading && !currentUser ? (
-            <div>
-              <p>You are not currently logged in.</p>
-              <a href={getLoginUrl()}>Login with Google</a>
-            </div>
-          ) : null}
-          {authError ? <p role="alert">{authError}</p> : null}
-        </section>
+          <section className="app-shell__auth" aria-label="Authentication status">
+            {authLoading ? <p>Checking login status...</p> : null}
+            {!authLoading && currentUser ? (
+              <>
+                <p>
+                  Logged in as <strong>{currentUser.displayName ?? currentUser.email ?? 'Unknown user'}</strong>
+                </p>
+                <button type="button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            ) : null}
+            {!authLoading && !currentUser ? (
+              <>
+                <p>You are not currently logged in.</p>
+                <a href={getLoginUrl()}>Login with Google</a>
+              </>
+            ) : null}
+            {authError ? <p role="alert">{authError}</p> : null}
+          </section>
+        </div>
       </header>
 
-      <main>
+      <main className="app-shell__main">
         <Outlet context={appContext} />
       </main>
 
-      <footer>
+      <footer className="app-shell__footer">
         <p>Legend of Zelda material is owned by Nintendo. This project is for educational testing only.</p>
       </footer>
     </div>

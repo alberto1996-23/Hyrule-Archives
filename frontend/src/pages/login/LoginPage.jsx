@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { getLoginUrl } from '../api/client';
+import { getLoginUrl } from '../../api/client';
+import './LoginPage.css';
 
 // The login page explains the cookie-based Google sign-in flow.
 export default function LoginPage() {
@@ -13,16 +14,17 @@ export default function LoginPage() {
   }
 
   return (
-    <section>
-      <h2>Login</h2>
-      <p>Please use your Google credentials to create an account and login.</p>
-      <p>
-        After Google finishes, the backend will send you back to the frontend callback page and the app will
-        check the login cookie.
-      </p>
-      <button type="button" onClick={handleLoginClick}>
-        OAuth 2.0 login
-      </button>
+    <section className="login-page">
+      <div className="login-page__card">
+        <p className="login-page__eyebrow">Login</p>
+        <h2>Sign in with Google</h2>
+        <p>
+          Use your Google account to create a session, save collection activity, add reactions, and leave comments.
+        </p>
+        <button className="login-page__button" type="button" onClick={handleLoginClick}>
+          OAuth 2.0 login
+        </button>
+      </div>
     </section>
   );
 }

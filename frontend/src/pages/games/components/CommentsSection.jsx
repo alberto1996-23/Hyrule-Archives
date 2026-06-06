@@ -11,10 +11,10 @@ export default function CommentsSection({
   onGoToLogin,
 }) {
   return (
-    <section>
+    <section className="game-detail__section">
       <h2>Comments</h2>
       {currentUser ? (
-        <form onSubmit={onSubmitComment}>
+        <form className="game-detail__comment-form" onSubmit={onSubmitComment}>
           <label htmlFor="commentBody">Write a comment for this Zelda game</label>
           <textarea
             id="commentBody"
@@ -30,7 +30,7 @@ export default function CommentsSection({
           </div>
         </form>
       ) : (
-        <div>
+        <div className="game-detail__login-prompt">
           <p>You must be logged in before posting a comment.</p>
           <button type="button" onClick={onGoToLogin}>
             Go to login
@@ -42,7 +42,7 @@ export default function CommentsSection({
       {commentsLoading ? <p>Loading comments...</p> : null}
       {!commentsLoading && comments.length === 0 ? <p>No comments yet for this game.</p> : null}
       {!commentsLoading && comments.length > 0 ? (
-        <ul>
+        <ul className="game-detail__comment-list">
           {comments.map((comment) => (
             <li key={comment.id}>
               <p>

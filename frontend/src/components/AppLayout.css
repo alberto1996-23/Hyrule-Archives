@@ -1,0 +1,133 @@
+.app-shell {
+  background: linear-gradient(180deg, #f7f1e6 0%, #efe5d6 100%);
+  color: #2b2114;
+  min-height: 100vh;
+}
+
+.app-shell__header {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid #d9d1c3;
+  box-shadow: 0 8px 30px rgba(33, 24, 8, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-shell__header-inner,
+.app-shell__main,
+.app-shell__footer {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.app-shell__header-inner {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+.app-shell__brand {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  gap: 1rem;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.app-shell__brand img {
+  height: 64px;
+  width: auto;
+}
+
+.app-shell__brand-copy h1 {
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.app-shell__brand-copy p {
+  color: #6a5835;
+  margin: 0.25rem 0 0;
+}
+
+.app-shell__nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-shell__nav-link {
+  border-radius: 999px;
+  color: #3a2b0d;
+  font-weight: 600;
+  padding: 0.65rem 0.95rem;
+  text-decoration: none;
+}
+
+.app-shell__nav-link:hover,
+.app-shell__nav-link:focus-visible,
+.app-shell__auth a:hover,
+.app-shell__auth a:focus-visible {
+  background: #efe8dc;
+}
+
+.app-shell__auth {
+  align-items: flex-end;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: end;
+  text-align: right;
+}
+
+.app-shell__auth p {
+  margin: 0;
+}
+
+.app-shell__auth button,
+.app-shell__auth a {
+  background: #0b6b36;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 700;
+  padding: 0.7rem 1rem;
+  text-decoration: none;
+}
+
+.app-shell__main {
+  padding-bottom: 2.5rem;
+  padding-top: 2rem;
+}
+
+.app-shell__footer {
+  color: #6a5835;
+  font-size: 0.95rem;
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 980px) {
+  .app-shell__header-inner {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .app-shell__nav-list {
+    justify-content: flex-start;
+  }
+
+  .app-shell__auth {
+    justify-items: start;
+    text-align: left;
+  }
+}

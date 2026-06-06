@@ -1,0 +1,58 @@
+.trends-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.trends-page__hero,
+.trends-page__card {
+  background: #fff;
+  border: 1px solid #d9d1c3;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
+  padding: 1.5rem;
+}
+
+.trends-page__eyebrow {
+  color: #7d5c1f;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.trends-page__hero h2,
+.trends-page__card h3 {
+  margin-top: 0;
+}
+
+.trends-page__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.trends-page__leaderboard,
+.trends-page__activity-list {
+  display: grid;
+  gap: 0.85rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trends-page__leaderboard li,
+.trends-page__activity-list li {
+  border-top: 1px solid #ece4d7;
+  padding-top: 0.85rem;
+}
+
+.trends-page__leaderboard li:first-child,
+.trends-page__activity-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.trends-page__game-title {
+  font-weight: 700;
+}
