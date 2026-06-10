@@ -7,6 +7,7 @@ public record GameDetailDto(
     Guid Id,
     string Title,
     string Slug,
+    string? ExternalApiId,
     string? Summary,
     string? ImageUrl,
     List<GameReleaseDto> Releases

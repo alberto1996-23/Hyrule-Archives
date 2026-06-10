@@ -61,7 +61,7 @@ function CollectorSection({ items }) {
 // The detail page still imports the selected MobyGames entry into the local database,
 // but the UI keeps the requested title, summary, platform availability, reactions, and comments.
 export default function GameDetailPage() {
-  const { gameSlug, mobyGameId } = useParams();
+  const { gameSlug, mobyGameId, localGameId } = useParams();
   const { currentUser, sendToLogin } = useOutletContext();
 
   const [selectedGame, setSelectedGame] = useState(null);
@@ -81,6 +81,10 @@ export default function GameDetailPage() {
   const [reactionSubmitting, setReactionSubmitting] = useState(false);
 
   const returnPath = useMemo(() => {
+    if (localGameId) {
+      return `/games/local/${localGameId}`;
+    }
+
     if (selectedGame) {
       return `/games/${selectedGame.slug}`;
     }
@@ -90,7 +94,16 @@ export default function GameDetailPage() {
     }
 
     return `/games/moby/${mobyGameId}`;
-  }, [gameSlug, mobyGameId, selectedGame]);
+  }, [gameSlug, localGameId, mobyGameId, selectedGame]);
+
+  function extractMobyGameId(externalApiId) {
+    if (!externalApiId?.startsWith('mobygames-')) {
+      return null;
+    }
+
+    const parsed = Number.parseInt(externalApiId.replace('mobygames-', ''), 10);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
 
   // Sketch update: recent comments are shown newest-first in the lower full-width section.
   const recentComments = useMemo(
@@ -112,6 +125,37 @@ export default function GameDetailPage() {
       setCollectionMessage('');
 
       try {
+        if (localGameId) {
+          const existingLocalGame = await getLocalGame(localGameId);
+
+          if (!isMounted) {
+            return;
+          }
+
+          const localMobyGameId = extractMobyGameId(existingLocalGame.externalApiId);
+
+          if (localMobyGameId) {
+            try {
+              const catalogGame = await getZeldaCatalogGameByMobyGameId(localMobyGameId);
+
+              if (isMounted) {
+                setSelectedGame(catalogGame);
+              }
+            } catch (catalogLookupError) {
+              if (catalogLookupError.status !== 404) {
+                throw catalogLookupError;
+              }
+            }
+          }
+
+          if (!isMounted) {
+            return;
+          }
+
+          await hydrateGameState(existingLocalGame.id, isMounted);
+          return;
+        }
+
         const catalogGame = gameSlug
           ? await getZeldaCatalogGameBySlug(gameSlug)
           : await getZeldaCatalogGameByMobyGameId(mobyGameId);
@@ -122,11 +166,11 @@ export default function GameDetailPage() {
 
         setSelectedGame(catalogGame);
 
-        let localGameId;
+        let resolvedLocalGameId;
 
         try {
           const existingLocalGame = await getLocalGameByMobyGameId(catalogGame.mobyGameId);
-          localGameId = existingLocalGame.id;
+          resolvedLocalGameId = existingLocalGame.id;
         } catch (mobyLookupError) {
           if (mobyLookupError.status !== 404) {
             throw mobyLookupError;
@@ -134,11 +178,11 @@ export default function GameDetailPage() {
 
           try {
             const imported = await importMobyGame(catalogGame.mobyGameId);
-            localGameId = imported.localGameId;
+            resolvedLocalGameId = imported.localGameId;
           } catch (importError) {
             try {
               const seededLocalGame = await getLocalGameBySlug(catalogGame.slug);
-              localGameId = seededLocalGame.id;
+              resolvedLocalGameId = seededLocalGame.id;
             } catch {
               throw importError;
             }
@@ -149,11 +193,11 @@ export default function GameDetailPage() {
           return;
         }
 
-        await hydrateGameState(localGameId, isMounted);
+        await hydrateGameState(resolvedLocalGameId, isMounted);
       } catch (loadError) {
         if (isMounted) {
           if (loadError.status === 404) {
-            setPageError('This Zelda game could not be found in the catalog.');
+            setPageError(localGameId ? 'This Zelda game could not be found in the archive.' : 'This Zelda game could not be found in the catalog.');
           } else if (loadError.status === 429) {
             setPageError('MobyGames temporarily rate-limited the import request. Already-saved local games still work, but new imports need a short wait before retrying.');
           } else {
@@ -172,7 +216,7 @@ export default function GameDetailPage() {
     return () => {
       isMounted = false;
     };
-  }, [currentUser, gameSlug, mobyGameId]);
+  }, [currentUser, gameSlug, localGameId, mobyGameId]);
 
   async function hydrateGameState(localGameId, isMountedFlag = true) {
     const [game, summary, commentItems, collectionItems] = await Promise.all([
@@ -329,18 +373,18 @@ export default function GameDetailPage() {
 
   return (
     <div className="game-detail">
-      {selectedGame ? (
+      {selectedGame || localGame ? (
         <>
           <section className="game-detail__hero game-detail__fade game-detail__fade--1">
             {/* Sketch update: the cover art now floats beside the copy so the summary wraps around it. */}
             <div className="game-detail__hero-story">
               <img
                 className="game-detail__hero-boxart game-detail__fade game-detail__fade--2"
-                src={selectedGame.boxArtPath}
-                alt={`${selectedGame.title} box art`}
+                src={selectedGame?.boxArtPath ?? localGame?.imageUrl ?? '/boxart/ocarinaOfTime.jpg'}
+                alt={`${localGame?.title ?? selectedGame?.title ?? 'Zelda game'} box art`}
               />
               <h1 className="game-detail__title game-detail__fade game-detail__fade--3">
-                {localGame?.title ?? selectedGame.title}
+                {localGame?.title ?? selectedGame?.title}
               </h1>
               {!loading && localGame?.summary ? (
                 <p className="game-detail__summary game-detail__fade game-detail__fade--4">{localGame.summary}</p>
@@ -365,14 +409,16 @@ export default function GameDetailPage() {
             </div>
           </section>
 
-          <section className="game-detail__section game-detail__platform-section game-detail__fade game-detail__fade--5">
-            <h2 className="game-detail__section-title game-detail__section-title--center">Primary Console</h2>
-            <div className="game-detail__logo-row game-detail__logo-row--centered">
-              <span className="game-detail__logo-wrap game-detail__logo-wrap--primary">
-                <img src={selectedGame.primaryConsole.imagePath} alt={`${selectedGame.primaryConsole.name} logo`} />
-              </span>
-            </div>
-          </section>
+          {selectedGame?.primaryConsole ? (
+            <section className="game-detail__section game-detail__platform-section game-detail__fade game-detail__fade--5">
+              <h2 className="game-detail__section-title game-detail__section-title--center">Primary Console</h2>
+              <div className="game-detail__logo-row game-detail__logo-row--centered">
+                <span className="game-detail__logo-wrap game-detail__logo-wrap--primary">
+                  <img src={selectedGame.primaryConsole.imagePath} alt={`${selectedGame.primaryConsole.name} logo`} />
+                </span>
+              </div>
+            </section>
+          ) : null}
         </>
       ) : null}
 

@@ -48,7 +48,7 @@ export default function TrendsPage() {
         <p className="trends-page__eyebrow">Trends</p>
         <h2>Legend of Zelda community trends</h2>
         <p>
-          These lists update based on favorites, comments, likes, and dislikes stored in the backend. Games with no
+          These lists update based on favorites, comments, likes, and dislikes. Games with no
           community activity stay off the leaderboards, and trending gives the most weight to strong like support while
           dislikes push a game downward.
         </p>

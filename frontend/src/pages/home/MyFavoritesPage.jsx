@@ -85,9 +85,6 @@ export default function MyFavoritesPage() {
       <section className="member-page__hero">
         <p className="member-page__eyebrow">Favorites</p>
         <h1>My favorite Zelda games</h1>
-        <p>
-          This is the short list I can check when I want to focus on the games I care about most.
-        </p>
         <div className="member-page__hero-actions">
           <Link to="/my-collection">Back to collection</Link>
         </div>
@@ -112,7 +109,7 @@ export default function MyFavoritesPage() {
                       <p>Status: {item.status}</p>
                       <p>Favorited: {item.favoritedAt ? new Date(item.favoritedAt).toLocaleString() : 'Not yet'}</p>
                       <p>
-                        Detail page: <Link to={`/games/${item.gameSlug}`}>open {item.gameTitle}</Link>
+                        Detail page: <Link to={`/games/local/${item.gameId}`}>open {item.gameTitle}</Link>
                       </p>
                     </div>
                     <CollectionStatusForm

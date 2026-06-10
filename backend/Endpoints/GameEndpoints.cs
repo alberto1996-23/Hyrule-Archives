@@ -17,6 +17,7 @@ public static class GameEndpoints
             game.Id,
             game.Title,
             game.Slug,
+            game.ExternalApiId,
             game.Summary,
             game.ImageUrl,
             game.Releases

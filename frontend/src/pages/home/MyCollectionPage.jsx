@@ -176,7 +176,7 @@ export default function MyCollectionPage() {
                       <p>Favorite: {item.isFavorite ? 'Yes' : 'No'}</p>
                       <p>Last updated: {new Date(item.updatedAt).toLocaleString()}</p>
                       <p>
-                        Detail page: <Link to={`/games/${item.gameSlug}`}>open {item.gameTitle}</Link>
+                        Detail page: <Link to={`/games/local/${item.gameId}`}>open {item.gameTitle}</Link>
                       </p>
                     </div>
                     <CollectionStatusForm

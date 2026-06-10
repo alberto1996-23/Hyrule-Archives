@@ -24,6 +24,7 @@ export default function App() {
         <Route path="/games" element={<GamesPage />} />
         <Route path="/games/:gameSlug" element={<GameDetailPage />} />
         <Route path="/games/moby/:mobyGameId" element={<GameDetailPage />} />
+        <Route path="/games/local/:localGameId" element={<GameDetailPage />} />
         <Route path="/trends" element={<TrendsPage />} />
         <Route
           path="/dashboard"
