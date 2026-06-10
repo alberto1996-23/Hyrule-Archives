@@ -105,16 +105,17 @@ jobs:
       - frontend-tests
       - e2e
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    env:
+      FRONTEND_DEPLOY_HOOK: ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK_URL }}
+      BACKEND_DEPLOY_HOOK: ${{ secrets.RENDER_BACKEND_DEPLOY_HOOK_URL }}
+      PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+      PUBLIC_API_URL: ${{ vars.PUBLIC_API_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate deployment secrets
-        env:
-          FRONTEND_DEPLOY_HOOK: ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK_URL }}
-          BACKEND_DEPLOY_HOOK: ${{ secrets.RENDER_BACKEND_DEPLOY_HOOK_URL }}
-          PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
-          PUBLIC_API_URL: ${{ vars.PUBLIC_API_URL }}
+      - name: Detect deployment configuration
+        id: deploy-config
         run: |
           missing=0
 
@@ -139,22 +140,26 @@ jobs:
           fi
 
           if [ "$missing" -ne 0 ]; then
-            echo "Add the Render deploy hooks and public URLs in GitHub before the deployment job can run."
-            exit 1
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Deployment skipped because Render deploy hooks or public URLs are not configured in GitHub settings."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Trigger backend deploy
+        if: steps.deploy-config.outputs.ready == 'true'
         env:
-          DEPLOY_URL: ${{ secrets.RENDER_BACKEND_DEPLOY_HOOK_URL }}
-          PUBLIC_API_URL: ${{ vars.PUBLIC_API_URL }}
+          DEPLOY_URL: ${{ env.BACKEND_DEPLOY_HOOK }}
+          PUBLIC_API_URL: ${{ env.PUBLIC_API_URL }}
         run: |
           curl --fail --silent --show-error "$DEPLOY_URL"
           echo "Triggered backend deploy for $PUBLIC_API_URL"
 
       - name: Trigger frontend deploy
+        if: steps.deploy-config.outputs.ready == 'true'
         env:
-          DEPLOY_URL: ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK_URL }}
-          PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+          DEPLOY_URL: ${{ env.FRONTEND_DEPLOY_HOOK }}
+          PUBLIC_APP_URL: ${{ env.PUBLIC_APP_URL }}
         run: |
           curl --fail --silent --show-error "$DEPLOY_URL"
           echo "Triggered frontend deploy for $PUBLIC_APP_URL"

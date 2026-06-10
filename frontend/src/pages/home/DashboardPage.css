@@ -5,15 +5,16 @@
 
 .dashboard-page__hero,
 .dashboard-page__card {
-  background: #fff;
-  border: 1px solid #d9d1c3;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
+  color: var(--color-text);
   padding: 1.5rem;
 }
 
 .dashboard-page__eyebrow {
-  color: #0b6b36;
+  color: var(--color-accent);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -40,9 +41,10 @@
 }
 
 .dashboard-page__actions a {
-  background: #0b6b36;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border-strong);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-text);
   font-weight: 700;
   padding: 0.75rem 1rem;
   text-decoration: none;

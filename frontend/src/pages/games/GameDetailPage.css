@@ -54,10 +54,10 @@
 
 .game-detail__hero-actions button,
 .game-detail__hero-actions a {
-  background: #0b6b36;
-  border: 0;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border-strong);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-text);
   cursor: pointer;
   font-weight: 700;
   padding: 0.75rem 1rem;
@@ -186,8 +186,10 @@
 }
 
 .game-detail__reaction-card {
-  border: 0;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
   border-radius: 20px;
+  color: var(--color-text);
   padding: 1rem;
   text-align: center;
 }
@@ -216,10 +218,10 @@
 .game-detail__actions button,
 .game-detail__comment-form button,
 .game-detail__login-prompt button {
-  background: #0b6b36;
-  border: 0;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border-strong);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-text);
   cursor: pointer;
   font-weight: 700;
   padding: 0.75rem 1rem;
@@ -257,9 +259,11 @@
 }
 
 .game-detail__comment-form textarea {
+  background: var(--color-surface);
   border: 1px solid #cdbfa6;
   border-radius: 28px;
   box-shadow: inset 0 1px 2px rgba(33, 24, 8, 0.08);
+  color: var(--color-text);
   font: inherit;
   min-height: 260px;
   padding: 1.1rem 1.25rem;
@@ -288,10 +292,10 @@
 
 .game-detail__comment-card {
   animation: detailFadeIn 0.65s ease both;
-  background: #198754;
-  border: 2px solid #58b67f;
+  background: var(--color-surface-alt);
+  border: 2px solid var(--color-border-strong);
   border-radius: 999px;
-  color: #f6f6ec;
+  color: var(--color-text);
   padding: 1rem 1.5rem;
 }
 
@@ -307,17 +311,18 @@
 }
 
 .game-detail__comment-meta {
-  color: #d9f0df;
+  color: var(--color-text-muted);
   font-size: 0.95rem;
 }
 
 .game-detail__secondary-button {
-  background: #e9e0d0 !important;
-  color: #2b2114 !important;
+  background: #e5dccb !important;
+  color: var(--color-text) !important;
 }
 
 .game-detail__danger-button {
-  background: #8b1e1e !important;
+  background: #d7b4ab !important;
+  color: var(--color-text) !important;
 }
 
 .game-detail__fade {

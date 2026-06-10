@@ -4,15 +4,16 @@
 }
 
 .games-page__header {
-  background: #fff;
-  border: 1px solid #d9d1c3;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
+  color: var(--color-text);
   padding: 1.5rem;
 }
 
 .games-page__eyebrow {
-  color: #7d5c1f;
+  color: var(--color-accent);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -31,8 +32,8 @@
 }
 
 .game-card {
-  background: #fff;
-  border: 1px solid #d9d1c3;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
   overflow: hidden;

@@ -36,7 +36,6 @@ export default function LiveActivityPage() {
   return (
     <div className="member-page">
       <section className="member-page__hero">
-        <p className="member-page__eyebrow">Live feed</p>
         <h1>Live community activity</h1>
       </section>
 

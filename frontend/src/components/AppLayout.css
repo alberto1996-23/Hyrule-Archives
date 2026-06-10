@@ -1,12 +1,12 @@
 .app-shell {
-  background: #0b6b36;
-  color: #f7f4ed;
+  background: var(--color-page);
+  color: var(--color-text);
   min-height: 100vh;
 }
 
 .app-shell__header {
-  background: #0d530e;
-  border-bottom: 1px solid #0d530e;
+  background: var(--color-surface-alt);
+  border-bottom: 1px solid var(--color-border);
   box-shadow: 0 8px 30px rgba(33, 24, 8, 0.08);
   position: sticky;
   top: 0;
@@ -53,8 +53,9 @@
 }
 
 .app-shell__nav-link {
+  border: 1px solid transparent;
   border-radius: 999px;
-  color: #e6e3e1;
+  color: var(--color-text);
   font-weight: 700;
   padding: 0.7rem 1rem;
   text-decoration: none;
@@ -62,7 +63,8 @@
 
 .app-shell__nav-link:hover,
 .app-shell__nav-link:focus-visible {
-  background: #013b1b;
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
 }
 
 .app-shell__auth {
@@ -75,16 +77,16 @@
 }
 
 .app-shell__auth p {
-  color: #f7f4ed;
+  color: var(--color-text);
   margin: 0;
 }
 
 .app-shell__auth button,
 .app-shell__auth a {
-  background: #622f08;
-  border: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-text);
   cursor: pointer;
   display: inline-flex;
   font-weight: 700;
@@ -99,7 +101,7 @@
 }
 
 .app-shell__footer {
-  color: #f7f4ed;
+  color: var(--color-text);
   font-size: 0.95rem;
   padding-bottom: 2rem;
 }
