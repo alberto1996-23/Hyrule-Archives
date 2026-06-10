@@ -1,7 +1,14 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import RequireAuth from './components/RequireAuth';
-import { HomeRoutePage, DashboardPage } from './pages/home';
+import {
+  HomeRoutePage,
+  DashboardPage,
+  LiveActivityPage,
+  MyActivityPage,
+  MyCollectionPage,
+  MyFavoritesPage,
+} from './pages/home';
 import { AuthCallbackPage, LoginPage } from './pages/login';
 import { GameDetailPage, GamesPage } from './pages/games';
 import { TrendsPage } from './pages/trends';
@@ -23,6 +30,38 @@ export default function App() {
           element={
             <RequireAuth>
               <DashboardPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/my-collection"
+          element={
+            <RequireAuth>
+              <MyCollectionPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/my-favorites"
+          element={
+            <RequireAuth>
+              <MyFavoritesPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/my-activity"
+          element={
+            <RequireAuth>
+              <MyActivityPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/community/live"
+          element={
+            <RequireAuth>
+              <LiveActivityPage />
             </RequireAuth>
           }
         />

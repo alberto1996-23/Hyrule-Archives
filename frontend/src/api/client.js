@@ -103,6 +103,19 @@ export function createComment(localGameId, body) {
   });
 }
 
+export function updateComment(commentId, body) {
+  return apiFetch(`/api/comments/${commentId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ body }),
+  });
+}
+
+export function deleteComment(commentId) {
+  return apiFetch(`/api/comments/${commentId}`, {
+    method: 'DELETE',
+  });
+}
+
 export function getReactionSummary(localGameId) {
   return apiFetch(`/api/games/${localGameId}/reactions/summary`);
 }
@@ -132,6 +145,19 @@ export function addToCollection(localGameId) {
   return apiFetch('/api/me/collection/', {
     method: 'POST',
     body: JSON.stringify({ gameId: localGameId }),
+  });
+}
+
+export function updateCollectionItem(collectionItemId, status) {
+  return apiFetch(`/api/me/collection/${collectionItemId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ status }),
+  });
+}
+
+export function deleteCollectionItem(collectionItemId) {
+  return apiFetch(`/api/me/collection/${collectionItemId}`, {
+    method: 'DELETE',
   });
 }
 

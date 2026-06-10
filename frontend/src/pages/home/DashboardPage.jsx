@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getMyActivity, getMyFavorites } from '../../api/client';
+import { getMyActivity, getMyCollection, getMyFavorites } from '../../api/client';
 import './DashboardPage.css';
 
 // The dashboard is the signed-in version of the home area.
 export default function DashboardPage() {
   const [favorites, setFavorites] = useState([]);
+  const [collection, setCollection] = useState([]);
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,11 +16,16 @@ export default function DashboardPage() {
 
     async function loadDashboard() {
       try {
-        const [favoriteItems, myActivity] = await Promise.all([getMyFavorites(), getMyActivity()]);
+        const [favoriteItems, myActivity, collectionItems] = await Promise.all([
+          getMyFavorites(),
+          getMyActivity(),
+          getMyCollection(),
+        ]);
 
         if (isMounted) {
           setFavorites(favoriteItems);
           setActivity(myActivity);
+          setCollection(collectionItems);
         }
       } catch (loadError) {
         if (isMounted) {
@@ -45,9 +51,31 @@ export default function DashboardPage() {
         <p className="dashboard-page__eyebrow">Dashboard</p>
         <h2>Your Zelda activity at a glance</h2>
         <p>This version of home is for signed-in users who want to jump back into favorites and recent activity.</p>
+        <div className="dashboard-page__actions">
+          <Link to="/my-collection">Manage my collection</Link>
+          <Link to="/my-favorites">Open favorites</Link>
+          <Link to="/my-activity">View activity</Link>
+          <Link to="/community/live">Open live feed</Link>
+        </div>
       </section>
 
       <div className="dashboard-page__grid">
+        <section className="dashboard-page__card">
+          <h3>Your collection snapshot</h3>
+          {loading ? <p>Loading collection summary...</p> : null}
+          {!loading ? <p>You currently have {collection.length} saved Zelda games.</p> : null}
+          {!loading && collection.length > 0 ? (
+            <ul className="dashboard-page__list">
+              {collection.slice(0, 3).map((item) => (
+                <li key={item.id}>
+                  <p className="dashboard-page__title">{item.gameTitle}</p>
+                  <p>Status: {item.status}</p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
+
         <section className="dashboard-page__card">
           <h3>Your favorites</h3>
           {loading ? <p>Loading favorites...</p> : null}

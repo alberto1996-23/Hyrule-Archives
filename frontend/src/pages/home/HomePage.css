@@ -3,27 +3,35 @@
   gap: 2rem;
 }
 
-.home-page__hero,
-.home-page__card {
-  background: #fff;
+.home-page__hero {
+  background: #ffffff;
   border: 1px solid #d9d1c3;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.home-page__card {
+  background: #ecd0ab;
+  border: 1px solid #d38600;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
   padding: 1.5rem;
 }
 
 .home-page__eyebrow {
-  color: #7d5c1f;
-  font-size: 0.875rem;
-  font-weight: 700;
+  color: #9f5000;
+  font-size: 1.5rem;
+  font-weight: 800;
   letter-spacing: 0.08em;
   margin: 0 0 0.5rem;
   text-transform: uppercase;
 }
 
-.home-page__hero h2,
 .home-page__card h3 {
-  margin-top: 0;
+  justify-content: center;
+  text-align: center;
 }
 
 .home-page__actions {

@@ -21,7 +21,6 @@ export default function AuthCallbackPage() {
       <div className="login-page__card">
         <p className="login-page__eyebrow">Login</p>
         <h2>Completing login</h2>
-        <p>The app is checking your login cookie and will redirect you shortly.</p>
       </div>
     </section>
   );

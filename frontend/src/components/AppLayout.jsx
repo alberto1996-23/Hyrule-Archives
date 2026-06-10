@@ -80,10 +80,6 @@ export default function AppLayout() {
         <div className="app-shell__header-inner">
           <Link className="app-shell__brand" to="/">
             <img src="/Zelda_the_hyrule_archives_logo.png" alt="The Hyrule Archives logo" />
-            <div className="app-shell__brand-copy">
-              <h1>The Hyrule Archives</h1>
-              <p>Track Zelda games, reactions, and community activity.</p>
-            </div>
           </Link>
 
           <nav aria-label="Primary navigation">
@@ -104,11 +100,23 @@ export default function AppLayout() {
                 </Link>
               </li>
               {currentUser ? (
-                <li>
-                  <Link className="app-shell__nav-link" to="/dashboard">
-                    Dashboard
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link className="app-shell__nav-link" to="/dashboard">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="app-shell__nav-link" to="/my-collection">
+                      My Collection
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="app-shell__nav-link" to="/community/live">
+                      Live Feed
+                    </Link>
+                  </li>
+                </>
               ) : null}
             </ul>
           </nav>
@@ -131,7 +139,6 @@ export default function AppLayout() {
                 <a href={getLoginUrl()}>Login with Google</a>
               </>
             ) : null}
-            {authError ? <p role="alert">{authError}</p> : null}
           </section>
         </div>
       </header>

@@ -47,9 +47,9 @@ export default function HomePage() {
   return (
     <div className="home-page">
       <section className="home-page__hero">
-        <p className="home-page__eyebrow">Welcome to The Hyrule Archives</p>
-        <h2>Track Zelda favorites, reactions, comments, and community trends in one place.</h2>
+        <h2 className="home-page__eyebrow">Welcome to The Hyrule Archives</h2>
         <p>
+          Track Zelda favorites, reactions, comments, and community trends in one place.
           Browse the curated Zelda catalog, check what the community is talking about, and sign in when you are
           ready to save your own collection activity.
         </p>

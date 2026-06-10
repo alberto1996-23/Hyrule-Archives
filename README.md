@@ -1,6 +1,284 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/N0Az2RiV)
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23886101)
-# Final Project
+# The Hyrule Archives
+
+The Hyrule Archives is my full-stack Zelda community archive. I built it as a React + ASP.NET Core application where people can browse curated Zelda history, explore imported game data, manage a personal collection, react to games, comment on titles, and watch a live community feed update through SignalR.
+
+## What I built
+
+This project combines:
+
+- a public discovery experience for Zelda games and community trends
+- authenticated collection, favorites, and activity pages
+- Google OAuth handled through the backend
+- a relational data model with EF Core migrations
+- curated Zelda catalog data plus MobyGames-backed metadata
+- simulated community-scale seed data
+- a live SignalR activity feed
+- frontend, backend, end-to-end, and accessibility-oriented test coverage
+- a GitHub Actions pipeline for build, test, E2E, and Render deployment hooks
+
+## Tech stack
+
+| Layer | Stack |
+| --- | --- |
+| Frontend | React 18, Vite, React Router |
+| Backend | ASP.NET Core minimal APIs on .NET 10 |
+| ORM | Entity Framework Core |
+| Database | SQLite locally, PostgreSQL-ready configuration for production |
+| Authentication | Google OAuth / OIDC with cookie auth |
+| Real-time | SignalR |
+| Testing | Vitest, React Testing Library, xUnit, Playwright, axe |
+| CI/CD | GitHub Actions + Render deploy hooks |
+
+## Main user-facing features
+
+### Public experience
+
+- Browse Zelda games and detail pages
+- View curated catalog entries with platform and release context
+- Explore trending/community highlights
+- Read public comments and reaction summaries
+- Search through the archive without signing in
+
+### Signed-in experience
+
+- View a personal dashboard
+- Add games to a personal collection
+- Update collection status and favorites
+- View a favorites-only page
+- View a personal activity timeline
+- Post, edit, and delete comments
+- React to games
+- Watch a live community feed through SignalR
+
+## Route coverage
+
+### Public React routes
+
+- `/`
+- `/login`
+- `/auth/callback`
+- `/games`
+- `/games/:gameSlug`
+- `/games/moby/:mobyGameId`
+- `/trends`
+
+### Protected React routes
+
+- `/dashboard`
+- `/my-collection`
+- `/my-favorites`
+- `/my-activity`
+- `/community/live`
+
+## Project structure
+
+```text
+backend/        ASP.NET Core API, EF Core models, services, SignalR hub
+backend.tests/  xUnit integration tests for protected API behavior
+frontend/       React app, reusable components, Vitest tests, Playwright tests
+docs/           Architecture, design, AI workflow, security, and accessibility writeups
+```
+
+## Local setup
+
+### Prerequisites
+
+- .NET 10 SDK
+- Node.js 20+
+- npm
+
+### 1. Configure the frontend
+
+Create a local frontend env file from the example:
+
+```dotenv
+VITE_API_BASE_URL=http://localhost:5154
+```
+
+### 2. Configure the backend
+
+The backend reads configuration from `appsettings.json`, `appsettings.Development.json`, environment variables, and user secrets.
+
+The minimum values I use locally are:
+
+- `Authentication:Google:ClientId`
+- `Authentication:Google:ClientSecret`
+- `MobyGames:ApiKey`
+
+For local development, SQLite is already configured through `backend/appsettings.Development.json`.
+
+### 3. Run the backend
+
+From the repository root:
+
+```bash
+dotnet run --project backend/backend.csproj --urls http://localhost:5154
+```
+
+### 4. Run the frontend
+
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs on `http://localhost:3000` and talks to the backend on `http://localhost:5154`.
+
+## Authentication notes
+
+Production-style login uses Google OAuth through the backend.
+
+For automated testing only, I added a development-only auth helper at `/auth/dev/login`. I do **not** expose that route in production. I added it so Playwright can verify signed-in flows without depending on a real Google popup in CI.
+
+## Database, migrations, and seed data
+
+The backend applies EF Core migrations on startup.
+
+### Seed options
+
+- `POST /api/dev/seed/milestone3`
+  - 500 simulated domain records
+  - 50 simulated users
+  - 1,000 interactions
+
+- `POST /api/dev/seed/final`
+  - 5,000 simulated domain records
+  - 500 simulated users
+  - 14,500 interactions total
+    - 5,000 collection items
+    - 3,000 comments
+    - 2,500 reactions
+    - 4,000 activity events
+
+The seed process intentionally resets only simulated content. It leaves real OAuth users and curated Zelda catalog records intact.
+
+## Testing
+
+### Frontend unit tests
+
+```bash
+cd frontend
+npm test
+```
+
+### Frontend end-to-end tests
+
+```bash
+cd frontend
+npm run test:e2e
+```
+
+### Backend tests
+
+```bash
+dotnet test backend.slnx --nologo
+```
+
+## Current validation status
+
+At the end of this completion pass, I verified:
+
+- frontend unit tests passing
+- frontend production build passing
+- backend test suite passing
+- Playwright coverage for signed-in flows
+- accessibility-oriented Playwright coverage using axe
+
+## CI/CD
+
+I added a GitHub Actions workflow in `.github/workflows/ci.yml` that runs:
+
+- backend tests
+- frontend unit tests
+- frontend production build
+- Playwright end-to-end tests
+- Render deployment hooks on the main branch
+
+The deployment job only runs after the test pipeline is green on the main branch.
+
+## Deployment
+
+I wired the repository for a Render deployment with a Dockerized ASP.NET Core backend, a static Vite frontend, and a managed PostgreSQL database.
+
+### Render blueprint
+
+The repo now includes `render.yaml`, which defines:
+
+- a backend web service at `https://hyrule-archives-api-alberto1996-23.onrender.com`
+- a frontend static site at `https://hyrule-archives-web-alberto1996-23.onrender.com`
+- a managed PostgreSQL database for production persistence
+
+If one of those Render service names is already taken in the target workspace, I need to rename it in `render.yaml` and update the matching URL references before the first sync.
+
+### GitHub secrets and variables
+
+The GitHub Actions deploy job expects these values:
+
+#### Repository secrets
+
+- `RENDER_BACKEND_DEPLOY_HOOK_URL`
+- `RENDER_FRONTEND_DEPLOY_HOOK_URL`
+
+#### Repository variables
+
+- `PUBLIC_API_URL=https://hyrule-archives-api-alberto1996-23.onrender.com`
+- `PUBLIC_APP_URL=https://hyrule-archives-web-alberto1996-23.onrender.com`
+
+### Render environment secrets
+
+During the first Render blueprint sync, I need to supply these backend secrets:
+
+- `Authentication__Google__ClientId`
+- `Authentication__Google__ClientSecret`
+- `MobyGames__ApiKey`
+
+The blueprint wires the rest of the production config automatically, including:
+
+- `DATABASE_URL` from the managed Postgres service
+- `Database__Provider=PostgreSql`
+- `Frontend__BaseUrl` set to the public frontend URL
+
+### Production URLs
+
+- Frontend: `https://hyrule-archives-web-alberto1996-23.onrender.com`
+- Backend: `https://hyrule-archives-api-alberto1996-23.onrender.com`
+
+### First-time deployment flow
+
+1. Create a new Render Blueprint from this repository.
+2. Confirm the two public service names in `render.yaml` are available.
+3. Enter the Google OAuth and MobyGames secrets when Render prompts for `sync: false` values.
+4. In Google Cloud, add `https://hyrule-archives-api-alberto1996-23.onrender.com/auth/callback/google` as an authorized redirect URI.
+5. After the first Render deploy completes, copy each service's deploy hook into the matching GitHub secret.
+6. Add `PUBLIC_API_URL` and `PUBLIC_APP_URL` as GitHub repository variables.
+7. Push to `main` again to let GitHub Actions trigger both Render deploy hooks automatically.
+
+## Security notes
+
+- Auth is enforced server-side with ASP.NET Core authentication and authorization middleware.
+- Protected API requests return proper `401`/`403` status codes.
+- The MobyGames API key stays on the server.
+- Development-only auth and seed routes are not mapped in production.
+- My NuGet vulnerability scan was clean.
+- `npm audit` currently reports 2 moderate dev-tooling vulnerabilities in `vite`/`esbuild`, which I documented in [docs/SECURITY_REVIEW.md](docs/SECURITY_REVIEW.md).
+
+## Documentation
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/DESIGN_NOTE.md](docs/DESIGN_NOTE.md)
+- [docs/PROMPT_LOG.md](docs/PROMPT_LOG.md)
+- [docs/AI_REFLECTION.md](docs/AI_REFLECTION.md)
+- [docs/SECURITY_REVIEW.md](docs/SECURITY_REVIEW.md)
+- [docs/ACCESSIBILITY_REPORT.md](docs/ACCESSIBILITY_REPORT.md)
+
+## Final note
+
+I used GitHub Copilot heavily during this project, but I still treated it like a pair programmer rather than an autopilot. The final code, verification, security decisions, and tradeoffs are mine.
+
+<!-- Legacy assignment prompt kept below for reference only.
 
 ---
 
@@ -655,4 +933,6 @@ The developers who stand out are not the ones who generated the most code with A
 That's what this project is for. Build something real.
 
 ---
+
+-->
 

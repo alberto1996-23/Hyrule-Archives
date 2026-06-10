@@ -1,193 +1,130 @@
 # Product Brief: The Hyrule Archives
 
-## App Name and Core Purpose
+## App name and purpose
 
-The Hyrule Archives is a full-stack community website dedicated to the recognition, history, and community discussion of The Legend of Zelda series.
+The Hyrule Archives is my Zelda-focused community archive. I built it to give fans one place to explore the series, track what they have played or collected, and participate in community discussion around each game.
 
-The purpose of the app is to give Zelda fans one organized place to explore the series through game information, release history, platforms, screenshots, community reactions, comments, and user collections. Visitors can browse Zelda titles and view public community data, while signed-in users can build their own personal Zelda collection, favorite games, like or dislike titles, post comments, and track their activity history.
+I did not want this to feel like a static wiki. I wanted it to feel like a living archive where real users and simulated community activity make the product look active from the first visit.
 
-The app is not meant to be only a static Zelda encyclopedia. It is meant to feel like a community archive where many users are interacting with the same games, creating trends, discussions, and live activity across the site.
+## Audience and problem
 
-## Audience and Problem
+My audience is Zelda fans, collectors, players, and people who enjoy video-game history.
 
-The app is for Zelda fans, Nintendo fans, collectors, and players who want one organized place to explore The Legend of Zelda series. Instead of being at the mercy of corporate social media sites or Nintendo.com, users can view this information in one focused archive.
-
-The app also solves the problem of passive browsing. Signed-in users can create their own “My Legend of Zelda Collection,” save favorite games, react to titles, and participate in comments. Their interactions will contribute to public community features such as trending games, most favorited titles, most discussed games, and recent activity.
+The problem I am solving is fragmentation. Zelda information, release history, platform context, community discussion, and personal tracking usually live in different places. I wanted to combine them into one focused product with both public browsing and signed-in ownership features.
 
 ## Domain
 
-The chosen domain is:
+### Domain summary
 
-**Video Games / Gaming History / Community Archive**
+Video games / gaming history / fan community archive
 
-This project focuses specifically on The Legend of Zelda series, its release history, platforms, game information, and fan activity.
+The project is specifically centered on The Legend of Zelda series.
 
-## Third-Party API
+## Core product direction
 
-The primary third-party API will be the **MobyGames Video Games Database API**. I plan to use MobyGames to fetch Zelda game data such as game titles, descriptions, release dates, platforms, screenshots, ratings, and other video game metadata.
+The Hyrule Archives combines three layers of value:
 
-MobyGames will be used for the main game-level data. The Hyrule Compendium API would be used as an optional extra feature to make the site feel more like a complete Zelda archive. The MobyGames API is integrated through the ASP.NET Core backend so the API key is not exposed in the frontend. The React /mobygames page displays third-party Zelda metadata including titles, MobyGames IDs, Moby scores, descriptions, platforms, cover images, and required attribution.
+1. **Curated archive value** through Zelda catalog and release presentation
+2. **Community value** through comments, reactions, trends, and live activity
+3. **Personal value** through a user-owned collection, favorites, and activity history
 
-The development seed endpoint creates 500 simulated domain records, 50 simulated users, and 1,000 interaction records. These records make the app feel populated while keeping simulated data separate from real OAuth users and real third-party API data.
+## Third-party API
 
-## Advanced Integration
+The main third-party API is the **MobyGames API**.
 
-My advanced integration will be **SignalR**.
+I use it to enrich the project with Zelda game metadata that meaningfully affects the product experience. The backend proxies MobyGames requests so the API key stays private and the frontend receives a normalized response shape.
 
-I plan to create a live community activity feed that updates when users favorite a game, like or dislike a title, or post a comment. This will help the site feel active and populated because users will be able to see activity happening across the community in real time.
+I also keep curated local Zelda catalog data because I wanted tighter control over the archive presentation, especially around release history, platform groupings, and collection appearances.
 
-Example live activity events could include:
+## Public users vs. signed-in users
 
-- A user favorited *The Legend of Zelda: Ocarina of Time*
-- A user commented on *Breath of the Wild*
-- A user liked *Tears of the Kingdom*
-- A game became one of the most discussed titles
+### Public users can
 
-This feature will help show that the site supports multiple users interacting with the same archive, not just one user managing private data.
+- browse games
+- open Zelda detail pages
+- view trends and community highlights
+- read public comments
+- inspect reaction summaries
+- explore release and platform information
 
-## Public Users vs. Signed-In Users
+### Signed-in users can
 
-Public users who are not logged in can:
+- open a personal dashboard
+- add games to a personal collection
+- update collection status
+- favorite or unfavorite collection entries
+- react to games
+- create, edit, and delete comments
+- review their own activity history
+- watch the live community feed
 
-- View Legend of Zelda titles
-- View screenshots of gameplay
-- View release dates, platforms, and summaries
-- Search for Zelda titles
-- Filter games by platform, region, or title
-- View comments
-- View likes and dislikes
-- View trending Zelda titles
-- View public community activity
+## Advanced integration
 
-If a public user tries to favorite a game, like or dislike a title, post a comment, or access a private collection, they will be redirected to the login screen.
+My advanced integration is **SignalR**.
 
-Signed-in users can:
+I use SignalR to power a live activity feed so the site feels active across multiple sessions. When users perform tracked actions, the backend creates an activity record and pushes the new event to connected clients.
 
-- Create and manage their “My Legend of Zelda Collection”
-- Favorite games in the Zelda series
-- Like or dislike Zelda titles
-- Post comments
-- Edit or delete their own comments
-- View their own activity history
-- Contribute to public trends and community statistics
-- See live updates from other users through the SignalR activity feed
+## Lived-in community strategy
 
-## Multi-User and Lived-In Community Features
+I wanted the app to feel populated even before a professor signs in with a real account, so I built a seed system that creates simulated users and interaction records.
 
-The Hyrule Archives will include community-driven features so the site feels active and lived in. Signed-in users will create records such as favorites, reactions, comments, and activity events. These records will not only belong to the individual user, but will also contribute to public community features.
+### Final seed target
 
-The app will show community-based data such as:
+- 5,000 simulated domain records
+- 500 simulated user profiles
+- 14,500 interaction records total
 
-- Trending Zelda games
-- Most favorited games
-- Most liked games
-- Most disliked games
-- Most commented games
-- Recent comments
-- Recent activity from users
-- Popular platforms
-- Community activity by game
+That interaction layer includes collection items, comments, reactions, and activity events.
 
-The site will also include simulated users and seeded interaction records so that the archive feels populated before real users begin using it. These simulated users will help create realistic activity such as comments, favorites, likes, dislikes, and activity history.
+## Main entities
 
-This will make the app feel like an active Zelda community instead of an empty database.
+- `AppUser`
+- `Game`
+- `Platform`
+- `Region`
+- `GameRelease`
+- `CollectionItem`
+- `Comment`
+- `Reaction`
+- `ActivityEvent`
+- `ZeldaCatalogGame`
+- `ZeldaCatalogAvailability`
+- `ZeldaCatalogCollectionAppearance`
 
-## Grouping and Organization of Artifacts
+## Key relationships
 
-The app will organize Zelda-related artifacts in multiple ways so users can explore the archive from different angles.
+- One user has many collection items
+- One user has many comments
+- One user has many reactions
+- One user has many activity events
+- One game has many collection items
+- One game has many comments
+- One game has many reactions
+- One game has many releases
+- Games and platforms connect through release records
 
-Artifacts may include:
+## Most important user stories
 
-- Games
-- Platforms
-- Release dates
-- Regions
-- Screenshots
-- Comments
-- Favorites
-- Reactions
-- Activity events
-- Compendium entries
-- Items, creatures, monsters, materials, and equipment
+1. As a visitor, I want to browse Zelda games and their release context so I can learn about the series history.
+2. As a visitor, I want to see which games are trending so the archive feels active and community-driven.
+3. As a signed-in user, I want to manage my own Zelda collection so I can track what I care about.
+4. As a signed-in user, I want to react to and comment on games so I can participate in the community.
+5. As a signed-in user, I want to watch a live activity feed so the site feels like a real shared space.
 
-The app will group these artifacts by:
+## Authentication choice
 
-### Game
+I use **Google OAuth / OpenID Connect** for real sign-in.
 
-Each Zelda game will have its own detail page showing its summary, platforms, screenshots, release information, comments, likes, dislikes, and recent activity.
+The backend creates a local application user from the provider subject identifier and then enforces ownership rules on private data. The frontend reflects auth state, but the actual security boundary is the API.
 
-### Platform
+## Hosting and deployment plan
 
-Users will be able to explore games by console or platform, such as NES, SNES, Nintendo 64, GameCube, Wii, Wii U, Nintendo DS, Nintendo 3DS, and Nintendo Switch.
+The repository now includes a GitHub Actions pipeline that builds, tests, runs Playwright, and can trigger deployment once production secrets are configured.
 
-### Region
+My intended hosting split is:
 
-Since Zelda games can have different release dates depending on location, the app will support release information by region. Regions may include Japan, North America, Europe, and international/global releases.
+- frontend on Vercel
+- backend on Render or another ASP.NET-friendly host
+- PostgreSQL in production
 
-### Community Activity
-
-The app will also group activity by game, showing which games are being favorited, commented on, liked, or disliked the most.
-
-## Main Entities and Relationships
-
-The main entities will include:
-
-| Entity | Purpose |
-|---|---|---|---|---|---|
-| User | Stores authenticated users linked to OAuth/OIDC identity |
-| Game | Stores Zelda title data imported or cached from RAWG |
-| Platform | Stores consoles/platforms like NES, N64, GameCube, Wii, Switch, etc. |
-| Region | Stores release regions such as Japan, North America, Europe, or Global |
-| GameRelease | Connects a game to a platform, region, and release date |
-| Collection | Represents a user’s “My Legend of Zelda Collection” |
-| CollectionItem | Stores games saved inside a user’s collection |
-| Favorite | User-owned record showing which games a user saved |
-| Reaction | User-owned like/dislike record for a game |
-| Comment | User-owned comment on a game or the series |
-| ActivityEvent | Tracks user actions for activity history and the SignalR live feed |
-
-The main relationships will include:
-
-- One User can have one or more Collections.
-- One Collection can have many CollectionItems.
-- One Game can appear in many CollectionItems.
-- One User can have many Favorites.
-- One User can have many Comments.
-- One User can have many Reactions.
-- One User can have many ActivityEvents.
-- One Game can have many Comments.
-- One Game can have many Reactions.
-- One Game can have many Favorites.
-- One Game can have many GameReleases.
-- One Platform can have many GameReleases.
-- One Region can have many GameReleases.
-- Many Games can appear on many Platforms through GameRelease or GamePlatform.
-- ActivityEvents will support both the user’s private activity history and the public live community feed.
-
-## Five Most Important User Stories
-
-1. As a visitor, I want to browse Zelda games grouped by platform, region, and release history so that I can understand how the series developed over time.
-
-2. As a visitor, I want to view trending Zelda games based on community favorites, likes, dislikes, and comments so that I can see what the community is currently interested in.
-
-3. As a signed-in user, I want to create and manage my own Zelda collection so that I can save the games that matter most to me.
-
-4. As a signed-in user, I want to like, dislike, and comment on Zelda games so that I can participate in the community discussion.
-
-5. As a signed-in user, I want to see live activity from other users so that the site feels active, connected, and lived in.
-
-## OAuth Provider
-
-I plan to use **Google OAuth / OpenID Connect** for authentication.
-
-When a user signs in for the first time, the backend will create a user profile in the database linked to the provider’s subject identifier. Signed-in users will be able to create private user-owned data such as collections, favorites, reactions, comments, and activity history.
-
-The backend will enforce user isolation so that one user cannot view, edit, or delete another user’s private collection, comments, favorites, or activity history.
-
-## Hosting Plan
-
-I plan to host the React frontend on **Vercel** and the ASP.NET Core backend on **Render** or **Railway**.
-
-The production database will be **PostgreSQL** through a hosted database provider such as Neon, Supabase, Render, or Railway.
-
-Environment variables will store API keys, OAuth credentials, and database connection strings so that no secrets are committed to the repository.
+I do not commit secrets. All sensitive configuration is expected through environment variables or platform secret storage.

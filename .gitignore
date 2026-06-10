@@ -104,6 +104,20 @@ dist
 # vitepress cache directory
 **/.vitepress/cache
 
+# .NET build output
+**/bin/
+**/obj/
+
+# Local SQLite databases and transient files
+*.db
+*.db-shm
+*.db-wal
+
+# Playwright output
+playwright-report/
+test-results/
+frontend/test-results/
+
 # Docusaurus cache and generated files
 .docusaurus
 

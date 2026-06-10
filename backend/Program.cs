@@ -3,6 +3,7 @@ using HyruleArchives.Endpoints;
 using HyruleArchives.Infrastructure;
 using HyruleArchives.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using HyruleArchives.Hubs;
 using Npgsql;
@@ -37,6 +38,12 @@ builder.Services.AddValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
 var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
@@ -159,6 +166,7 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
+app.UseForwardedHeaders();
 app.UseExceptionHandler();
 
 if (!app.Environment.IsDevelopment())
@@ -214,6 +222,12 @@ app.MapHub<ActivityHub>("/hubs/activity");
 if (app.Environment.IsDevelopment())
 {
     app.MapDevSeedEndpoints();
+}
+
+// Development/test auth stays out of production, but it lets Playwright verify protected flows without a real OAuth popup.
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Testing"))
+{
+    app.MapDevAuthEndpoints();
 }
 
 app.Run();

@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: hyrule-archives-api-alberto1996-23
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Database__Provider
+        value: PostgreSql
+      - key: Frontend__BaseUrl
+        value: https://hyrule-archives-web-alberto1996-23.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hyrule-archives-db-alberto1996-23
+          property: connectionString
+      - key: Authentication__Google__ClientId
+        sync: false
+      - key: Authentication__Google__ClientSecret
+        sync: false
+      - key: MobyGames__ApiKey
+        sync: false
+
+  - type: web
+    name: hyrule-archives-web-alberto1996-23
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://hyrule-archives-api-alberto1996-23.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: hyrule-archives-db-alberto1996-23
+    region: oregon
+    postgresMajorVersion: "18"
