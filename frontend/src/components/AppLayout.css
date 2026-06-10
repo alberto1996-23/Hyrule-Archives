@@ -6,7 +6,7 @@
 
 .app-shell__header {
   background: var(--color-surface-alt);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #3f250f;
   box-shadow: 0 8px 30px rgba(33, 24, 8, 0.08);
   position: sticky;
   top: 0;

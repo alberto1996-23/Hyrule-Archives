@@ -81,9 +81,9 @@
 }
 
 .game-detail__recent-comments {
-  background: var(--color-comment-surface);
-  border: 1px solid var(--color-comment-border);
-  color: var(--color-comment-text);
+  background: var(--color-page);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 .game-detail__section-title {
@@ -94,7 +94,7 @@
 }
 
 .game-detail__recent-comments .game-detail__section-title {
-  color: var(--color-comment-text);
+  color: var(--color-text);
 }
 
 .game-detail__platform-section .game-detail__section-title {
@@ -262,6 +262,11 @@
   gap: 0.75rem;
 }
 
+.game-detail__comment-card-actions {
+  margin-top: 0.85rem;
+  padding-bottom: 0.2rem;
+}
+
 .game-detail__comment-composer {
   display: grid;
   gap: 1rem;
@@ -301,11 +306,11 @@
 
 .game-detail__comment-card {
   animation: detailFadeIn 0.65s ease both;
-  background: var(--color-comment-surface);
-  border: 2px solid var(--color-comment-border);
+  background: #083f0a;
+  border: 2px solid var(--color-border);
   border-radius: 999px;
-  color: var(--color-comment-text);
-  padding: 1rem 1.5rem;
+  color: var(--color-text);
+  padding: 1.15rem 2rem 1.35rem;
 }
 
 .game-detail__comment-author {
@@ -320,18 +325,20 @@
 }
 
 .game-detail__comment-meta {
-  color: #5a4a2b;
+  color: var(--color-text-muted);
   font-size: 0.95rem;
 }
 
 .game-detail__secondary-button {
-  background: var(--color-comment-surface) !important;
-  color: var(--color-comment-text) !important;
+  background: transparent !important;
+  border-color: var(--color-border-strong) !important;
+  color: var(--color-text) !important;
 }
 
 .game-detail__danger-button {
-  background: #ecd8d2 !important;
-  color: var(--color-comment-text) !important;
+  background: rgba(139, 30, 30, 0.35) !important;
+  border-color: rgba(255, 214, 214, 0.8) !important;
+  color: var(--color-text) !important;
 }
 
 .game-detail__fade {

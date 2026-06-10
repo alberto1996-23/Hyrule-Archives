@@ -84,11 +84,13 @@ export default function AppLayout() {
 
           <nav aria-label="Primary navigation">
             <ul className="app-shell__nav-list">
-              <li>
-                <Link className="app-shell__nav-link" to="/">
-                  {currentUser ? 'Home' : 'Homepage'}
-                </Link>
-              </li>
+              {!currentUser ? (
+                <li>
+                  <Link className="app-shell__nav-link" to="/">
+                    Homepage
+                  </Link>
+                </li>
+              ) : null}
               <li>
                 <Link className="app-shell__nav-link" to="/games">
                   Games
@@ -101,11 +103,6 @@ export default function AppLayout() {
               </li>
               {currentUser ? (
                 <>
-                  <li>
-                    <Link className="app-shell__nav-link" to="/dashboard">
-                      Dashboard
-                    </Link>
-                  </li>
                   <li>
                     <Link className="app-shell__nav-link" to="/my-collection">
                       My Collection
