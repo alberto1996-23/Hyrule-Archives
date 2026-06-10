@@ -10,6 +10,7 @@
   box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
   color: var(--color-text);
   padding: 1.5rem;
+  text-align: center;
 }
 
 .games-page__header h1 {
@@ -29,7 +30,6 @@
 
 .game-card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(33, 24, 8, 0.08);
   overflow: hidden;
@@ -56,9 +56,7 @@
 .game-card__image-frame {
   align-items: center;
   aspect-ratio: 3 / 4;
-  background:
-    linear-gradient(180deg, rgba(247, 239, 223, 0.96), rgba(235, 223, 198, 0.96));
-  border-bottom: 1px solid rgba(120, 86, 44, 0.14);
+  background: var(--color-page);
   display: flex;
   justify-content: center;
   padding: 0.85rem;
