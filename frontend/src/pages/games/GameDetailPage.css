@@ -31,7 +31,7 @@
 }
 
 .game-detail__title {
-  color: #11100c;
+  color: var(--color-text);
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 5vw, 4.8rem);
   line-height: 1;
@@ -39,7 +39,7 @@
 }
 
 .game-detail__summary {
-  color: #15130d;
+  color: var(--color-text);
   font-size: clamp(1.08rem, 1.45vw, 1.3rem);
   line-height: 1.95;
   white-space: pre-line;
@@ -54,7 +54,7 @@
 
 .game-detail__hero-actions button,
 .game-detail__hero-actions a {
-  background: var(--color-surface-alt);
+  background: transparent;
   border: 1px solid var(--color-border-strong);
   border-radius: 999px;
   color: var(--color-text);
@@ -65,7 +65,7 @@
 }
 
 .game-detail__collection-message {
-  color: #11100c;
+  color: var(--color-text);
   margin-top: 0.75rem;
 }
 
@@ -76,16 +76,25 @@
 /* Visual update: section cards inherit the page color, leaving only recent comment tabs filled. */
 .game-detail__platform-section,
 .game-detail__engagement-panel,
-.game-detail__comment-composer,
-.game-detail__recent-comments {
+.game-detail__comment-composer {
   background: transparent;
 }
 
+.game-detail__recent-comments {
+  background: var(--color-comment-surface);
+  border: 1px solid var(--color-comment-border);
+  color: var(--color-comment-text);
+}
+
 .game-detail__section-title {
-  color: #11100c;
+  color: var(--color-text);
   font-family: var(--font-display);
   font-size: clamp(2rem, 3.2vw, 3rem);
   margin: 0 0 1rem;
+}
+
+.game-detail__recent-comments .game-detail__section-title {
+  color: var(--color-comment-text);
 }
 
 .game-detail__platform-section .game-detail__section-title {
@@ -186,7 +195,7 @@
 }
 
 .game-detail__reaction-card {
-  background: var(--color-surface-alt);
+  background: transparent;
   border: 1px solid var(--color-border);
   border-radius: 20px;
   color: var(--color-text);
@@ -195,7 +204,7 @@
 }
 
 .game-detail__reaction-card h3 {
-  color: #30210f;
+  color: var(--color-text);
   font-family: var(--font-display);
   font-size: 1.9rem;
   margin: 0 0 0.5rem;
@@ -218,7 +227,7 @@
 .game-detail__actions button,
 .game-detail__comment-form button,
 .game-detail__login-prompt button {
-  background: var(--color-surface-alt);
+  background: transparent;
   border: 1px solid var(--color-border-strong);
   border-radius: 999px;
   color: var(--color-text);
@@ -259,8 +268,8 @@
 }
 
 .game-detail__comment-form textarea {
-  background: var(--color-surface);
-  border: 1px solid #cdbfa6;
+  background: transparent;
+  border: 1px solid var(--color-border);
   border-radius: 28px;
   box-shadow: inset 0 1px 2px rgba(33, 24, 8, 0.08);
   color: var(--color-text);
@@ -292,10 +301,10 @@
 
 .game-detail__comment-card {
   animation: detailFadeIn 0.65s ease both;
-  background: var(--color-surface-alt);
-  border: 2px solid var(--color-border-strong);
+  background: var(--color-comment-surface);
+  border: 2px solid var(--color-comment-border);
   border-radius: 999px;
-  color: var(--color-text);
+  color: var(--color-comment-text);
   padding: 1rem 1.5rem;
 }
 
@@ -311,18 +320,18 @@
 }
 
 .game-detail__comment-meta {
-  color: var(--color-text-muted);
+  color: #5a4a2b;
   font-size: 0.95rem;
 }
 
 .game-detail__secondary-button {
-  background: #e5dccb !important;
-  color: var(--color-text) !important;
+  background: var(--color-comment-surface) !important;
+  color: var(--color-comment-text) !important;
 }
 
 .game-detail__danger-button {
-  background: #d7b4ab !important;
-  color: var(--color-text) !important;
+  background: #ecd8d2 !important;
+  color: var(--color-comment-text) !important;
 }
 
 .game-detail__fade {

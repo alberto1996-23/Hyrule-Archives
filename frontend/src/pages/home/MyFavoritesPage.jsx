@@ -112,7 +112,7 @@ export default function MyFavoritesPage() {
                       <p>Status: {item.status}</p>
                       <p>Favorited: {item.favoritedAt ? new Date(item.favoritedAt).toLocaleString() : 'Not yet'}</p>
                       <p>
-                        Detail page: <Link to={`/games/${item.slug}`}>open {item.gameTitle}</Link>
+                        Detail page: <Link to={`/games/${item.gameSlug}`}>open {item.gameTitle}</Link>
                       </p>
                     </div>
                     <CollectionStatusForm
