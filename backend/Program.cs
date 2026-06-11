@@ -47,11 +47,22 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
 var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+var frontendBaseUrl = builder.Configuration["Frontend:BaseUrl"] ?? "http://localhost:3000";
+
+// Chrome and Safari can disagree about localhost cookie handling when one side uses
+// http://localhost and the other uses https://localhost. In local development we allow
+// an HTTP cookie only when the configured frontend origin is plain localhost so the
+// browser can send the auth cookie back to the matching backend origin.
+var allowInsecureLocalAuthCookie =
+    builder.Environment.IsDevelopment() &&
+    Uri.TryCreate(frontendBaseUrl, UriKind.Absolute, out var frontendBaseUri) &&
+    string.Equals(frontendBaseUri.Host, "localhost", StringComparison.OrdinalIgnoreCase) &&
+    string.Equals(frontendBaseUri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase);
 
 var authenticationBuilder = builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = "Google";
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
 .AddCookie(options =>
 {
@@ -60,6 +71,9 @@ var authenticationBuilder = builder.Services.AddAuthentication(options =>
     options.Cookie.Name = "HyruleArchives.Auth";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = allowInsecureLocalAuthCookie
+        ? CookieSecurePolicy.None
+        : CookieSecurePolicy.SameAsRequest;
     options.SlidingExpiration = true;
     options.Events = new CookieAuthenticationEvents
     {
@@ -110,6 +124,14 @@ if (!string.IsNullOrWhiteSpace(googleClientId) &&
         options.ClientSecret = googleClientSecret;
         options.CallbackPath = "/auth/callback/google";
         options.SaveTokens = false;
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        // Google's correlation cookie must follow the same localhost rule as the app cookie.
+        // If it is marked secure while the browser is on http://localhost, the callback can
+        // fail before the app ever gets a signed-in principal.
+        options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+        options.CorrelationCookie.SecurePolicy = allowInsecureLocalAuthCookie
+            ? CookieSecurePolicy.None
+            : CookieSecurePolicy.Always;
     });
 }
 
@@ -118,7 +140,7 @@ builder.Services.AddAuthorization();
 var allowedOrigins = (builder.Configuration
         .GetSection("Frontend:AllowedOrigins")
         .Get<string[]>() ?? [])
-    .Append(builder.Configuration["Frontend:BaseUrl"])
+    .Append(frontendBaseUrl)
     .Concat(
     [
         "http://localhost:3000",
@@ -180,7 +202,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!allowInsecureLocalAuthCookie)
+{
+    // Keep production and non-localhost setups on HTTPS, but avoid forcing a scheme change
+    // during localhost development where the frontend may intentionally run over plain HTTP.
+    app.UseHttpsRedirection();
+}
+
 app.UseCors("Frontend");
 
 app.UseAuthentication();

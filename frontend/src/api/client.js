@@ -1,4 +1,46 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5154';
+const LOCAL_BACKEND_BY_PROTOCOL = {
+  'http:': 'http://localhost:5154',
+  'https:': 'https://localhost:7244',
+};
+
+function resolveApiBaseUrl() {
+  const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+
+  if (typeof window === 'undefined') {
+    return configuredApiBaseUrl || LOCAL_BACKEND_BY_PROTOCOL['http:'];
+  }
+
+  const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+  if (!isLocalhost) {
+    return configuredApiBaseUrl || LOCAL_BACKEND_BY_PROTOCOL['http:'];
+  }
+
+  // For localhost development the frontend must talk to the backend over the same scheme
+  // the page was loaded with. That prevents Safari/Chrome from treating the auth cookie as
+  // cross-site simply because one tab used http://localhost and another used https://localhost.
+  const protocolMatchedLocalBaseUrl =
+    LOCAL_BACKEND_BY_PROTOCOL[window.location.protocol] ?? LOCAL_BACKEND_BY_PROTOCOL['http:'];
+
+  if (!configuredApiBaseUrl) {
+    return protocolMatchedLocalBaseUrl;
+  }
+
+  try {
+    const configuredUrl = new URL(configuredApiBaseUrl);
+    const usesLocalhost = ['localhost', '127.0.0.1'].includes(configuredUrl.hostname);
+
+    if (usesLocalhost && configuredUrl.protocol !== window.location.protocol) {
+      return protocolMatchedLocalBaseUrl;
+    }
+
+    return configuredApiBaseUrl;
+  } catch {
+    return configuredApiBaseUrl;
+  }
+}
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 // This helper sends every request with cookies enabled so the React app can work
 // with the ASP.NET Core cookie-based login flow.
@@ -41,7 +83,15 @@ async function apiFetch(path, options = {}) {
 
 // The frontend uses this URL when the user clicks the login button.
 export function getLoginUrl() {
-  return `${API_BASE_URL}/auth/login`;
+  if (typeof window === 'undefined') {
+    return `${API_BASE_URL}/auth/login`;
+  }
+
+  // Send the active frontend origin to the backend so the OAuth redirect lands back on the
+  // same localhost scheme and browser tab family that initiated login.
+  const loginUrl = new URL(`${API_BASE_URL}/auth/login`);
+  loginUrl.searchParams.set('frontendOrigin', window.location.origin);
+  return loginUrl.toString();
 }
 
 export function getApiBaseUrl() {
