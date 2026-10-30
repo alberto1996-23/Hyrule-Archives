@@ -17,17 +17,22 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = ResolveConnectionString(builder.Configuration);
 var databaseProvider = ResolveDatabaseProvider(builder.Configuration, connectionString);
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+if(databaseProvider == DatabaseProvider.PostgreSql)
 {
-    if (databaseProvider == DatabaseProvider.PostgreSql)
-    {
-        options.UseNpgsql(connectionString);
-    }
-    else
-    {
-        options.UseSqlite(connectionString);
-    }
-});
+    // Use the PostgreSQL context and its separate migrations.
+    builder.Services.AddDbContext<PostgresAppDbContext>(options =>
+        options.UseNpgsql(connectionString));
+
+    // Existing services can keep requesting AppDbContext.
+    builder.Services.AddScoped<AppDbContext>(services =>
+        services.GetRequiredService<PostgresAppDbContext>());
+}
+else
+{
+    // Local SQLite keeps using its original context and migrations.
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlite(connectionString));
+}
 
 builder.Services.AddScoped<AuthUserService>();
 builder.Services.AddScoped<GameService>();

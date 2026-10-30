@@ -9,11 +9,12 @@ namespace HyruleArchives.Data;
 // It defines which tables exist and how the entities relate to one another.
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
+    public AppDbContext(DbContextOptions<AppDbContext> options): base(options){
     }
 
+    // Allows the PostgreSQL context to reuse our table definitions.
+    protected AppDbContext(DbContextOptions options): base(options) {
+    }
     // Each DbSet becomes a table-like entry point for queries and writes.
     public DbSet<AppUser> AppUsers => Set<AppUser>();
     public DbSet<Game> Games => Set<Game>();
