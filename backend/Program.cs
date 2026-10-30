@@ -262,18 +262,18 @@ app.Run();
 
 static string ResolveConnectionString(IConfiguration configuration)
 {
-    var configuredConnectionString = configuration.GetConnectionString("DefaultConnection");
-
-    if (!string.IsNullOrWhiteSpace(configuredConnectionString))
-    {
-        return configuredConnectionString;
-    }
-
     var databaseUrl = configuration["DATABASE_URL"];
 
     if (!string.IsNullOrWhiteSpace(databaseUrl))
     {
         return ConvertDatabaseUrlToConnectionString(databaseUrl);
+    }
+
+    var localConnection = configuration.GetConnectionString("DefaultConnection");
+
+    if (!string.IsNullOrWhiteSpace(localConnection))
+    {
+        return localConnection;
     }
 
     return "Data Source=hyrule-archives.db";
