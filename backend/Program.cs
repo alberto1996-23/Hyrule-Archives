@@ -320,4 +320,3 @@ static string ConvertDatabaseUrlToConnectionString(string databaseUrl)
 
     return connectionStringBuilder.ConnectionString;
 }
-
